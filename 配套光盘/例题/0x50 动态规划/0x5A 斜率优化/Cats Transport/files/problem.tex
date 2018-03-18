@@ -1,0 +1,48 @@
+\begin{problem}{${problem.name}}{${problem.inputFile}}{${problem.outputFile}}<#--
+--><#assign timeLimit=problem.timeLimit/1000/><#--
+--><#if language="russian"><#--
+    --><#if problem.timeLimit%1000!=0||(10<=timeLimit%100&&timeLimit%100<20)||timeLimit%10=0||5<=timeLimit><#--
+        -->{${timeLimit?c} секунд}<#--
+    --><#else><#--
+        --><#if timeLimit%10=1><#--
+            -->{${timeLimit?c} секунда}<#--
+        --><#else><#--
+            -->{${timeLimit?c} секунды}<#--
+        --></#if><#--
+    --></#if><#--
+--><#else><#--
+    -->{${timeLimit?c} second<#if (timeLimit!=1)>s</#if>}<#--
+--></#if><#--
+--><#assign memoryLimit=problem.memoryLimit/1048576/><#--
+--><#if language="russian"><#--
+    --><#if problem.memoryLimit%1048576==0&&!(10<=memoryLimit%100&&memoryLimit%100<20)&&2<=memoryLimit%10&&memoryLimit%10<5><#--
+        -->{${memoryLimit?c} мегабайта}
+    <#else><#--
+        -->{${memoryLimit?c} мегабайт}
+    </#if>
+<#else><#--
+    -->{${memoryLimit?c} megabyte<#if (memoryLimit>1)>s</#if>}
+</#if>
+
+${problem.legend}
+
+\InputFile
+${problem.input}
+
+\OutputFile
+${problem.output}
+
+\Examples
+
+\begin{example}
+<#list problem.sampleTests as test>
+\exmp{${test.input}}{${test.output}}%
+</#list>
+\end{example}
+
+<#if (problem.notes??) && (problem.notes?length > 0)>
+\Note
+${problem.notes}
+
+</#if>
+\end{problem}

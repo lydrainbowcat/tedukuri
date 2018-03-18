@@ -1,0 +1,1 @@
+对于每组数据，在两人均采取最佳策略的前提下，若Freda能获胜，输出freda；若Rainbow能获胜，输出rainbow。

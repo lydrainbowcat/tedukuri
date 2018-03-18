@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<problem revision="10" short-name="cat-transport" url="https://polygon.codeforces.com/p/lydrainbowcat/cat-transport">
+    <names>
+        <name language="russian" value="Транспортировка кошек"/>
+        <name language="english" value="Cats Transport"/>
+    </names>
+    <statements>
+        <statement charset="UTF-8" language="russian" path="statements/russian/problem.tex" type="application/x-tex"/>
+        <statement charset="UTF-8" language="english" path="statements/english/problem.tex" type="application/x-tex"/>
+        <statement charset="UTF-8" language="russian" path="statements/.html/russian/problem.html" type="text/html"/>
+        <statement charset="UTF-8" language="english" path="statements/.html/english/problem.html" type="text/html"/>
+    </statements>
+    <judging cpu-name="Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz" cpu-speed="3600" input-file="" output-file="">
+        <testset name="tests">
+            <time-limit>2000</time-limit>
+            <memory-limit>268435456</memory-limit>
+            <test-count>30</test-count>
+            <input-path-pattern>tests/%02d</input-path-pattern>
+            <answer-path-pattern>tests/%02d.a</answer-path-pattern>
+            <tests>
+                <test method="manual" sample="true"/>
+                <test cmd="gen1__2_9 2" method="generated"/>
+                <test cmd="gen1__2_9 3" method="generated"/>
+                <test cmd="gen1__2_9 4" method="generated"/>
+                <test cmd="gen1__2_9 5" method="generated"/>
+                <test cmd="gen1__2_9 6" method="generated"/>
+                <test cmd="gen1__2_9 7" method="generated"/>
+                <test cmd="gen1__2_9 8" method="generated"/>
+                <test cmd="gen1__2_9 9" method="generated"/>
+                <test cmd="gen2__10_20 10" method="generated"/>
+                <test cmd="gen2__10_20 11" method="generated"/>
+                <test cmd="gen2__10_20 12" method="generated"/>
+                <test cmd="gen2__10_20 13" method="generated"/>
+                <test cmd="gen2__10_20 14" method="generated"/>
+                <test cmd="gen2__10_20 15" method="generated"/>
+                <test cmd="gen2__10_20 16" method="generated"/>
+                <test cmd="gen2__10_20 17" method="generated"/>
+                <test cmd="gen2__10_20 18" method="generated"/>
+                <test cmd="gen2__10_20 19" method="generated"/>
+                <test cmd="gen2__10_20 20" method="generated"/>
+                <test cmd="gen3__21_30 21" method="generated"/>
+                <test cmd="gen3__21_30 22" method="generated"/>
+                <test cmd="gen3__21_30 23" method="generated"/>
+                <test cmd="gen3__21_30 24" method="generated"/>
+                <test cmd="gen3__21_30 25" method="generated"/>
+                <test cmd="gen3__21_30 26" method="generated"/>
+                <test cmd="gen3__21_30 27" method="generated"/>
+                <test cmd="gen3__21_30 28" method="generated"/>
+                <test cmd="gen3__21_30 29" method="generated"/>
+                <test cmd="gen3__21_30 30" method="generated"/>
+            </tests>
+        </testset>
+        <testset name="pretests">
+            <time-limit>2000</time-limit>
+            <memory-limit>268435456</memory-limit>
+            <test-count>10</test-count>
+            <input-path-pattern>pretests/%02d</input-path-pattern>
+            <answer-path-pattern>pretests/%02d.a</answer-path-pattern>
+            <tests>
+                <test method="manual"/>
+                <test cmd="gen1__2_9 2" method="generated"/>
+                <test cmd="gen1__2_9 3" method="generated"/>
+                <test cmd="gen1__2_9 4" method="generated"/>
+                <test cmd="gen1__2_9 5" method="generated"/>
+                <test cmd="gen1__2_9 6" method="generated"/>
+                <test cmd="gen1__2_9 7" method="generated"/>
+                <test cmd="gen1__2_9 8" method="generated"/>
+                <test cmd="gen1__2_9 9" method="generated"/>
+                <test cmd="gen2__10_20 10" method="generated"/>
+            </tests>
+        </testset>
+    </judging>
+    <files>
+        <resources>
+            <file path="files/problem.tex"/>
+            <file path="files/testlib.h" type="h.g++"/>
+        </resources>
+        <executables>
+            <executable>
+                <source path="files/gen1__2_9.cpp" type="cpp.g++"/>
+                <binary path="files/gen1__2_9.exe" type="exe.win32"/>
+            </executable>
+            <executable>
+                <source path="files/gen2__10_20.cpp" type="cpp.g++"/>
+                <binary path="files/gen2__10_20.exe" type="exe.win32"/>
+            </executable>
+            <executable>
+                <source path="files/validator.cpp" type="cpp.g++"/>
+                <binary path="files/validator.exe" type="exe.win32"/>
+            </executable>
+            <executable>
+                <source path="files/gen3__21_30.cpp" type="cpp.g++"/>
+                <binary path="files/gen3__21_30.exe" type="exe.win32"/>
+            </executable>
+            <executable>
+                <source path="files/std.cpp" type="cpp.g++"/>
+                <binary path="files/std.exe" type="exe.win32"/>
+            </executable>
+        </executables>
+    </files>
+    <assets>
+        <checker name="std::ncmp.cpp" type="testlib">
+            <source path="files/check.cpp" type="cpp.g++"/>
+            <binary path="check.exe" type="exe.win32"/>
+            <copy path="check.cpp" type="cpp.g++"/>
+            <testset>
+                <test-count>0</test-count>
+                <input-path-pattern>files/tests/checker-tests/%02d</input-path-pattern>
+                <output-path-pattern>files/tests/checker-tests/%02d.o</output-path-pattern>
+                <answer-path-pattern>files/tests/checker-tests/%02d.a</answer-path-pattern>
+                <tests/>
+            </testset>
+        </checker>
+        <validators>
+            <validator>
+                <source path="files/validator.cpp" type="cpp.g++"/>
+                <binary path="files/validator.exe" type="exe.win32"/>
+                <testset>
+                    <test-count>0</test-count>
+                    <input-path-pattern>files/tests/validator-tests/%02d</input-path-pattern>
+                    <tests/>
+                </testset>
+            </validator>
+        </validators>
+        <solutions>
+            <solution tag="time-limit-exceeded">
+                <source path="solutions/bruteforce.cpp" type="cpp.g++"/>
+                <binary path="solutions/bruteforce.exe" type="exe.win32"/>
+            </solution>
+            <solution tag="main">
+                <source path="solutions/std.cpp" type="cpp.g++"/>
+                <binary path="solutions/std.exe" type="exe.win32"/>
+            </solution>
+            <solution tag="accepted">
+                <source path="solutions/try.cpp" type="cpp.g++"/>
+                <binary path="solutions/try.exe" type="exe.win32"/>
+            </solution>
+        </solutions>
+    </assets>
+    <properties>
+        <property name="tests-wellformed" value="true"/>
+    </properties>
+    <stresses>
+        <stress-count>0</stress-count>
+        <stress-path-pattern>stresses/%03d</stress-path-pattern>
+        <list/>
+    </stresses>
+    <documents>
+        <document path="documents/description.txt" type="text/plain"/>
+        <document path="documents/tutorial.txt" type="text/plain"/>
+    </documents>
+    <tags>
+        <tag value="dp"/>
+    </tags>
+</problem>

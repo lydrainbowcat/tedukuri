@@ -1,0 +1,10 @@
+Let a[i] be the distance from hill 1 to hill i, s[i]=a[1]+a[2]+…+a[i].
+Firstly, we sort the cats by (Ti-a[i]). Then we can divide the cats into P consecutive parts, and plan a feeder for each part. Dynamic Programming can solve this problem.
+Let f[i,j] indicates the minimum sum of waiting time with i feeders and j cats.
+f[i,j] = f[i-1,k]+a[j]*(j-k)-s[j]+s[k] = a[j]*j-s[j] + f[i-1,k]+s[k]-a[j]*k
+That’s O(MP^2). It’ll get TLE.
+Let p>q, then:
+f[i-1,p]+s[p]-a[j]*p>f[i-1,q]+s[q]-a[j]*q
+(f[i-1,p]+s[p])-(f[i-1,q]+s[q])>a[j]*(p-q)
+g[p]-g[q]>a[j]*(p-q)
+So we can use Slope Optimization with a queue. Then we get O(MP), which can pass the problem.

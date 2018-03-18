@@ -1,0 +1,3 @@
+Zxr960115 is an owner of a large farm. He feeds M cute cats and employs P feeders. There’s a straight road across the farm and N hills along the road, numbered from 1 to N. The distance between hill i and i-1 is Di meters. The feeders live in hill 1.
+One day, the cats went out to play. Cat i went on a trip to hill Hi, finished its trip at time Ti, and then waited at hill Hi for a feeder. Each feeder goes straightly from hill 1 to N without waiting at a hill and takes all the WAITING cats at each hill away. Feeders walk at a speed of 1 meter per unit time and are strong enough to take as many cats as they want.
+Your task is to schedule the time leaving from hill 1 for each feeder so that the sum of the waiting time of all cats is minimum.
