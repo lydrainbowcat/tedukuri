@@ -1,4 +1,4 @@
-﻿// Tarjan算法求有向图强连通分量并缩点
+// Tarjan算法求有向图强连通分量并缩点
 #include<iostream>
 #include<cstdio>
 #include<cstring>
@@ -30,7 +30,7 @@ void tarjan(int x) {
 			low[x] = min(low[x], low[ver[i]]);
 		}
 		else if (ins[ver[i]])
-			low[x] = min(low[x], low[ver[i]]);
+			low[x] = min(low[x], dfn[ver[i]]);
 	if (dfn[x] == low[x]) {
 		cnt++; int y;
 		do {
