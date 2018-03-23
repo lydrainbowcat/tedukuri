@@ -5,40 +5,51 @@
 using namespace std;
 int a[100], v[100], n, len, cnt;
 
-// ÕıÔÚÆ´µÚstick¸ùÔ­Ê¼Ä¾°ô£¨ÒÑ¾­Æ´ºÃÁËstick-1¸ù£©
-// µÚstick¸ùÄ¾°ôµÄµ±Ç°³¤¶ÈÎªcab
-// Æ´½Óµ½µÚstick¸ùÄ¾°ôÖĞµÄÉÏÒ»¸ùĞ¡Ä¾¹÷Îªlast
+// æ­£åœ¨æ‹¼ç¬¬stickæ ¹åŸå§‹æœ¨æ£’ï¼ˆå·²ç»æ‹¼å¥½äº†stick-1æ ¹ï¼‰
+// ç¬¬stickæ ¹æœ¨æ£’çš„å½“å‰é•¿åº¦ä¸ºcab
+// æ‹¼æ¥åˆ°ç¬¬stickæ ¹æœ¨æ£’ä¸­çš„ä¸Šä¸€æ ¹å°æœ¨æ£ä¸ºlast
 bool dfs(int stick, int cab, int last) {
-	// ËùÓĞÔ­Ê¼Ä¾°ôÒÑ¾­È«²¿Æ´ºÃ£¬ËÑË÷³É¹¦
+	// æ‰€æœ‰åŸå§‹æœ¨æ£’å·²ç»å…¨éƒ¨æ‹¼å¥½ï¼Œæœç´¢æˆåŠŸ
 	if (stick > cnt) return true;
-	// µÚstick¸ùÄ¾°ôÒÑ¾­Æ´ºÃ£¬È¥Æ´ÏÂÒ»¸ù
-	if (cab == len) return dfs(stick + 1, 0, 1);
-	int fail = 0; // ¼ôÖ¦(b)
-	// ¼ôÖ¦(a)£ºĞ¡Ä¾¹÷³¤¶Èµİ¼õ£¨´Ólast¿ªÊ¼Ã¶¾Ù£©
-	for (int i = last; i <= n; i++)
-		if (!v[i] && cab + a[i] <= len && fail != a[i]) {
+	int fail = 0; // å‰ªæ(b)
+	// å‰ªæ(a)ï¼šå°æœ¨æ£é•¿åº¦é€’å‡ï¼ˆä»lastå¼€å§‹æšä¸¾ï¼‰
+	for (int i = last; i <= n; i++) {
+		if (v[i] || fail == a[i]) continue;
+		if (cab + a[i] == len) {
+			v[i] = 1;
+			// ç¬¬stickæ ¹æœ¨æ£’å·²ç»æ‹¼å¥½ï¼Œå»æ‹¼ä¸‹ä¸€æ ¹
+			if (dfs(stick + 1, 0, 1)) return true;
+			v[i] = 0; // è¿˜åŸç°åœº
+			return false; // å‰ªæ(c)
+		} else if (cab + a[i] < len) {
 			v[i] = 1;
 			if (dfs(stick, cab + a[i], i + 1)) return true;
 			fail = a[i];
-			v[i] = 0; // »¹Ô­ÏÖ³¡
-			if (cab == 0) return false; // ¼ôÖ¦(c)
+			v[i] = 0; // è¿˜åŸç°åœº
+			if (cab == 0) return false; // å‰ªæ(c)
 		}
-	return false; // ËùÓĞ·ÖÖ§¾ù³¢ÊÔ¹ı£¬ËÑË÷Ê§°Ü
+	}
+	return false; // æ‰€æœ‰åˆ†æ”¯å‡å°è¯•è¿‡ï¼Œæœç´¢å¤±è´¥
 }
 
 int main() {
 	while (cin >> n && n) {
-		int sum = 0, val = 0;
+		int sum = 0, val = 0, m = 0;
 		for (int i = 1; i <= n; i++) {
-			scanf("%d", &a[i]);
-			sum += a[i];
-			val = max(val, a[i]);
+			int x;
+			scanf("%d", &x);
+			if (x <= 50) {
+				a[++m] = x;
+				sum += a[m];
+				val = max(val, a[m]);
+			}
 		}
+		n = m;
 		sort(a + 1, a + n + 1);
 		reverse(a + 1, a + n + 1); 
 		for (len = val; len <= sum; len++) {
 			if (sum % len) continue;
-			cnt = sum / len; // Ô­Ê¼Ä¾°ô³¤¶ÈÎªlen£¬¹²cnt¸ù
+			cnt = sum / len; // åŸå§‹æœ¨æ£’é•¿åº¦ä¸ºlenï¼Œå…±cntæ ¹
 			memset(v, 0, sizeof(v));
 			if (dfs(1, 0, 1)) break;
 		}
