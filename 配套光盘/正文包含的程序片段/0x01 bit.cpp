@@ -44,14 +44,14 @@ int hamilton(int n, int weight[20][20]) {
 }
 
 // lowbit运算，找到二进制下所有是1的位
-const MAX_N = 1 << 20;
-int H[MAX_N + 1];
+int H[37];
 // 预处理
-for (int i = 0; i <= 20; i++) H[1 << i] = i;
+for (int i = 0; i < 36; i++) H[(1ll << i) % 37] = i;
 // 对多次询问进行求解
 while (cin >> n) {
 	while (n > 0) {
-		cout << H[n & -n] << ' ';
+		cout << H[(n & -n) % 37] << ' ';
 		n -= n & -n;
 	}
+	cout << endl;
 }

@@ -1,4 +1,4 @@
-#include<iostream>
+﻿#include<iostream>
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
@@ -11,24 +11,18 @@ int a[100], v[100], n, len, cnt;
 bool dfs(int stick, int cab, int last) {
 	// 所有原始木棒已经全部拼好，搜索成功
 	if (stick > cnt) return true;
-	int fail = 0; // 剪枝(b)
-	// 剪枝(a)：小木棍长度递减（从last开始枚举）
-	for (int i = last; i <= n; i++) {
-		if (v[i] || fail == a[i]) continue;
-		if (cab + a[i] == len) {
-			v[i] = 1;
-			// 第stick根木棒已经拼好，去拼下一根
-			if (dfs(stick + 1, 0, 1)) return true;
-			v[i] = 0; // 还原现场
-			return false; // 剪枝(c)
-		} else if (cab + a[i] < len) {
+	// 第stick根木棒已经拼好，去拼下一根
+	if (cab == len) return dfs(stick + 1, 0, 1);
+	int fail = 0; // 剪枝(2)
+	// 剪枝(1)：小木棍长度递减（从last开始枚举）
+	for (int i = last; i <= n; i++)
+		if (!v[i] && cab + a[i] <= len && fail != a[i]) {
 			v[i] = 1;
 			if (dfs(stick, cab + a[i], i + 1)) return true;
 			fail = a[i];
 			v[i] = 0; // 还原现场
-			if (cab == 0) return false; // 剪枝(c)
+			if (cab == 0 || cab + a[i] == len) return false; // 剪枝(3,4)
 		}
-	}
 	return false; // 所有分支均尝试过，搜索失败
 }
 
