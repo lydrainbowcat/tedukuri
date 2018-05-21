@@ -21,8 +21,7 @@ int main()
 		q.pop();
 		for (int k = 0; k < 4; k++) {
 			pair<int, int> next(now.first + dx[k], now.second + dy[k]);
-			if (next.first<1 || next.second<1 || 
-next.first>n || next.second>m) continue;
+			if (next.first<1 || next.second<1 || next.first>n || next.second>m) continue;
 			if (d[next.first][next.second] == -1) {
 				d[next.first][next.second] = d[now.first][now.second] + 1;
 				q.push(next);
