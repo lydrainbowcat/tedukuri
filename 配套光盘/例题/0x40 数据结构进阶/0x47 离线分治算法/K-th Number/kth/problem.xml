@@ -1,0 +1,21 @@
+<problem
+    id      = "kth"
+    version = "1.0"
+>
+    <judging>
+        <script type = "%icpc">
+            <testset
+                test-count   = "30"
+                input-href   = "tests/##."
+                answer-href  = "tests/##.a"
+                input-name   = "kth.in"
+                output-name  = "kth.out"
+                time-limit   = "2s"
+                memory-limit = "67108864"
+            />
+            <verifier type = "%testlib">
+                <binary executable-id = "x86.exe.win32" file = "check.exe" />
+            </verifier>
+        </script>
+    </judging>
+</problem>
