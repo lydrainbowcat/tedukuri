@@ -31,6 +31,7 @@ int main()
 						f1[k][j+k-1] = min(f1[k][j+k-1],f1[k][l-1] * f1[l][j+k-1]);
 						f1[k][j+k-1] = min(f1[k][j+k-1],f1[k][l-1] * f[l][j+k-1]);
 						f1[k][j+k-1] = min(f1[k][j+k-1],f[k][l-1] * f1[l][j+k-1]);
+						f1[k][j+k-1] = min(f1[k][j+k-1],f[k][l-1] * f[l][j+k-1]);
 					}
 				}
 	int maxx = -0x7fffffff;	
