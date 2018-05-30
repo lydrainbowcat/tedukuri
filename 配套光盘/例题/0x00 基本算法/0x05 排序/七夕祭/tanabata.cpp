@@ -34,11 +34,11 @@ int main()
 	for(i=1;i<=n;i++) b[0]+=b[i];
 	for(i=1;i<=m;i++) c[0]+=c[i];
 	if(b[0]%n==0&&c[0]%m==0)
-		printf("both %I64d\n",calc(b,n)+calc(c,m));
+		printf("both %lld\n",calc(b,n)+calc(c,m));
 	else if(b[0]%n==0)
-		printf("row %I64d\n",calc(b,n));
+		printf("row %lld\n",calc(b,n));
 	else if(c[0]%m==0)
-		printf("column %I64d\n",calc(c,m));
+		printf("column %lld\n",calc(c,m));
 	else puts("impossible");
 	return 0;
 }

@@ -26,7 +26,7 @@ int main()
 		}
 		for(ans=0,i=1;i<=n;i++)
 			if(l>=s[i]&&l<=e[i]&&(l-s[i])%d[i]==0) ans++;
-		if(ans&1) cout<<l<<' '<<ans<<endl; else puts("Poor QIN Teng:(");
+		if(ans&1) cout<<l<<' '<<ans<<endl; else puts("There's no weakness.");
 	}
 	return 0;
 }

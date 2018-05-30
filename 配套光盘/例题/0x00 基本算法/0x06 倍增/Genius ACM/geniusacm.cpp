@@ -10,7 +10,7 @@
 #include<cassert>
 using namespace std;
 int T, n, m, p, q, a[500010], b[500010], c[500010];
-__int64 t;
+long long t;
 
 template<typename T> inline void R(T &x) {
 	char ch = getchar(); x = 0;
@@ -19,14 +19,14 @@ template<typename T> inline void R(T &x) {
 }
 bool cmp(int x, int y) { return a[x] < a[y]; }
 
-__int64 calc(int ed)
+long long calc(int ed)
 {
-	__int64 ans = 0;
+	long long ans = 0;
 	for (int l = 1, r = p, i = m; l < r && i && ans <= t; i--, l++, r--)
 	{
 		while (l <= p && b[l] >= ed) l++;
 		while (r && b[r] >= ed) r--;
-		if (l < r) ans += (__int64)(a[b[r]] - a[b[l]])*(a[b[r]] - a[b[l]]);
+		if (l < r) ans += (long long)(a[b[r]] - a[b[l]])*(a[b[r]] - a[b[l]]);
 	}
 	return ans;
 }
