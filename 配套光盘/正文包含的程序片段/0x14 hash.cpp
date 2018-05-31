@@ -1,10 +1,11 @@
-// Hash 例题：兔子与兔子
+﻿// Hash 例题：兔子与兔子
 char s[1000010];
 unsigned long long f[1000010], p[1000010];
 int n, q;
 int main() {
-	cin >> n >> q;
 	scanf("%s", s + 1);
+	n = strlen(s + 1);
+	cin >> q;
 	p[0] = 1; // 131^0
 	for (int i = 1; i <= n; i++) {
 		f[i] = f[i-1] * 131 + (s[i]-'a'+1); // hash of 1~i
