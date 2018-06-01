@@ -2,7 +2,7 @@
 #include<algorithm>
 using namespace std;
 typedef long long ll;
-ll a[200000],n,p,ans,i;
+ll a[500000],n,p,ans,i;
 int t,m;
 
 ll gcd(ll a,ll b)
@@ -23,13 +23,18 @@ ll phi(ll n)
 	return m;
 }
 
+// 64位整数乘法
 ll mul(ll a,ll b)
 {
-	int c=1000000;
-	return (a*(b%c)%n+(a*c%n)*(b/c))%n;
+	a %= n, b %= n;
+	long long c = (long double)a * b / n;
+	long long ans = a * b - c * n;
+	if (ans < 0) ans += n;
+	else if (ans >= n) ans -= n;
+	return ans;
 }
 
-ll pow(ll a,ll b)
+ll power(ll a,ll b)
 {
 	ll c=1;
 	for(;b;b>>=1)
@@ -57,7 +62,7 @@ int main()
 				}
 			sort(a+1,a+m+1);
 			for(i=1;i<=m;i++)
-				if(pow(10,a[i])==1) break;
+				if(power(10,a[i])==1) break;
 			cout<<a[i]<<endl;
 		}
 		else cout<<"0\n";

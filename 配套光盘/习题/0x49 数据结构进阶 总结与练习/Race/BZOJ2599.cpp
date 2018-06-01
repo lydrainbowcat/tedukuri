@@ -7,7 +7,7 @@ using namespace std;
 const int u=200010;
 struct rec{int x,y;}a[u],f[3];
 long long dis[u];
-int ver[2*u],edge[2*u],next[2*u],head[u],d[u],s[u],v[u];
+int ver[2*u],edge[2*u],Next[2*u],head[u],d[u],s[u],v[u];
 queue<int> q;
 int n,m,tot,t,i,j,k,x,y,z,ans,MIN;
 
@@ -18,13 +18,13 @@ bool cmp(rec a,rec b)
 
 void add(int x,int y,int z)
 {
-	ver[++tot]=y,edge[tot]=z,next[tot]=head[x],head[x]=tot;
+	ver[++tot]=y,edge[tot]=z,Next[tot]=head[x],head[x]=tot;
 }
 
 void size(int x)
 {
 	s[x]=1,v[x]=1;
-	for(int i=head[x];i;i=next[i])
+	for(int i=head[x];i;i=Next[i])
 		if(!v[ver[i]])
 		{
 			size(ver[i]);
@@ -37,7 +37,7 @@ void center(int y)
 {
 	int temp=s[x]-s[y];
 	v[y]=1;
-	for(int i=head[y];i;i=next[i])
+	for(int i=head[y];i;i=Next[i])
 		if(!v[ver[i]])
 		{
 			center(ver[i]);
@@ -51,7 +51,7 @@ void treedp(int x)
 {
 	v[x]=1;
 	a[++t].x=x,a[t].y=y;
-	for(int i=head[x];i;i=next[i])
+	for(int i=head[x];i;i=Next[i])
 		if(!v[ver[i]])
 		{
 			d[ver[i]]=d[x]+1;
@@ -78,7 +78,7 @@ int main()
 		size(x);
 		center(x);
 		v[x=z]=1,t=0;
-		for(i=head[x];i;i=next[i])
+		for(i=head[x];i;i=Next[i])
 			if(!v[y=ver[i]])
 			{
 				d[y]=1,dis[y]=edge[i];

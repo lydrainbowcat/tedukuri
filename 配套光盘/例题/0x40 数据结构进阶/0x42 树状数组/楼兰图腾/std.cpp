@@ -44,8 +44,6 @@ int answer(int l,int r,int c)
 
 int main()
 {
-    freopen("totem3.in","r",stdin);
-    freopen("totem3.out","w",stdout);
     scanf("%d",&n);
     build(1,n,1);
     for (i=1;i<=n;i++)
@@ -56,7 +54,7 @@ int main()
         ans1+=(long long)answer(y+1,n,1)*(n-y-answer(y+1,n,1));
         ans2+=(long long)answer(1,y-1,1)*(y-1-answer(1,y-1,1));
     }
-    printf("%I64d %I64d\n",ans1,ans2);
+    printf("%lld %lld\n",ans1,ans2);
     return 0;
 }
 
