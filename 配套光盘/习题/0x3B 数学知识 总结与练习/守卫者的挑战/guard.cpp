@@ -4,7 +4,7 @@
 #include<algorithm>
 using namespace std;
 int a[210],n,m,t,i,j,k;
-double p[210],f[201][201][401],ans;
+double p[210],f[205][205][405],ans;
 int main()
 {
 	freopen("guard.in","r",stdin);
