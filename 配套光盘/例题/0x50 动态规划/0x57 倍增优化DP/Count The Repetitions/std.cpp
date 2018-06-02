@@ -10,8 +10,8 @@ string s1, s2;
 int n1, n2;
 long long f[105][32];
 
-int main()  {
-	cin >> s1 >> n1 >> s2 >> n2;
+void solve() {
+	memset(f, 0, sizeof(f));
 	for (int i = 0; i < s1.size(); i++) {
 		int pos = i;
 		f[i][0] = 0;
@@ -21,7 +21,7 @@ int main()  {
 				pos = (pos + 1) % s1.size();
 				if (++cnt >= s1.size()) { 
 					cout << 0 << endl; 
-					return 0;
+					return;
 				}
 			}
 			pos = (pos + 1) % s1.size();
@@ -43,4 +43,8 @@ int main()  {
 		m = max(m, ans);
 	}
 	cout << m / n2 << endl;
+}
+
+int main()  {
+	while(cin >> s2 >> n2 >> s1 >> n1) solve();
 }
