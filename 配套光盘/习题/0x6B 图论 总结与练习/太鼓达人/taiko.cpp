@@ -1,34 +1,49 @@
-#include<stdio.h>
-int n,m,zc,ss,u;
-int a[100020];
-int s[1000020];
-char z[1000020];
-int main()
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
+using namespace std;
+
+int n,lim;
+int vis[3055000];
+int a[3050500];
+
+void dfs(int x,int y)
 {
-	freopen("taiko.in","r",stdin);
-	freopen("taiko.out","w",stdout);
-	for(;~scanf("%d",&n);)
+	if(x>lim/2) return;
+	if(y>lim/2) return;
+	if(x==lim/2&&y==lim/2)
 	{
-		m=1<<n-1;
-		for(int i=0;i<m;i++)
-			a[i]=0;
-		s[ss++]=ss=0;
-		zc=n+m*2;
-		for(;ss;)
-		{
-			u=s[--ss];
-			z[--zc]=u%2+'0';
-			u/=2;
-			for(int w;a[u]<2;)
-			{
-				w=2*u+a[u]++;
-				s[ss++]=w;
-				u=w%m;
-			}
-		}
-		for(;zc;)
-			z[--zc]='0';
-		z[m*2]=0;
-		printf("%d %s\n",1<<n,z);
+		printf("%d ",lim);
+		for(int i=1;i<=lim;i++)
+			printf("%d",a[i]);
+		printf("\n");
+		exit(0);
 	}
+	a[x+y+1]=0;
+	int sum=0;
+	for(int i=x+y-n+2;i<=x+y+1;i++)
+		sum=sum*2+a[i];
+	if(!vis[sum])
+	{
+		vis[sum]=1;
+		dfs(x+1,y);
+	}
+	a[x+y+1]=1;
+	sum=0;
+	for(int i=x+y-n+2;i<=x+y+1;i++)
+		sum=sum*2+a[i];
+	if(!vis[sum])
+	{
+		vis[sum]=1;
+		dfs(x,y+1);
+	}	
+}
+
+int main()
+{	
+	scanf("%d",&n),lim=1<<n;
+	vis[0]=1;
+	dfs(n,0);
+	return 0;
 }

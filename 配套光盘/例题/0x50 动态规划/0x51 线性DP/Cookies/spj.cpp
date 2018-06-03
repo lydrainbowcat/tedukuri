@@ -17,8 +17,17 @@ bool DoCompare(){
     for (int i = 1; i <= n; i++) fscanf(fin, "%d", &g[i]);
     fscanf(fstd, "%d", &ans);
     fscanf(fout, "%d", &val);
+    // 答案不对 
     if (ans != val) return false;
-    for (int i = 1; i <= n; i++) fscanf(fout, "%d", &c[i]);
+    for (int i = 1; i <= n; i++) {
+		fscanf(fout, "%d", &c[i]);
+		// 每个孩子分到正整数块饼干 
+		if (c[i] <= 0) return false;
+		m -= c[i];
+	}
+	// 饼干没有分完 
+	if (m) return false;
+	// 检查方案的怨气值是否等于输出的值 
     for (int i = 1; i <= n; i++) {
     	int cnt = 0;
     	for (int j = 1; j <= n; j++) if (c[j] > c[i]) cnt++;
