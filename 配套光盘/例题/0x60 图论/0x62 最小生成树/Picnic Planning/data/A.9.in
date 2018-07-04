@@ -1,0 +1,13 @@
+11
+Park BigBadBill 3
+Park BigBadJane 2
+Park BigBadTodd 1
+BigBadTodd BigBadJane 5
+BigBadBill BigBadTodd 1
+BigBadBill BigBadJohn 5
+BigBadBill BigBadEmma 2
+BigBadJohn BigBadJane 1
+BigBadEmma BigBadJane 3
+BigBadEmma BigBadJohn 8
+BigBadBill BigBadJane 7
+1
