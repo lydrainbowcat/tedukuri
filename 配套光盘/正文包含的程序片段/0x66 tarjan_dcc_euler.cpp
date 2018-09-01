@@ -73,7 +73,7 @@ int main() {
 		if (c[x] == c[y]) continue;
 		add_c(c[x], c[y]);
 	}
-	printf("缩点之后的森林，点数 %d，边数 %d（可能有重边）\n", dcc, tc / 2);
+	printf("缩点之后的森林，点数 %d，边数 %d\n", dcc, tc / 2);
 	for (int i = 2; i < tc; i++)
 		printf("%d %d\n", vc[i ^ 1], vc[i]);
 }
