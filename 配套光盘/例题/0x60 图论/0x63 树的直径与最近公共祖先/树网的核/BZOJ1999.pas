@@ -5,13 +5,13 @@ var
  v:array[0..500000]of boolean;
  n,s,m,tot,i,j,l,r,x,y,z,temp,ans:longint;
 
-function max(x,y:longint):longint;
- begin
-  if x>y then exit(x) else exit(y);
- end;
 function min(x,y:longint):longint;
  begin
   if x<y then exit(x) else exit(y);
+ end;
+function max(x,y:longint):longint;
+ begin
+  if x>y then exit(x) else exit(y);
  end;
 
 procedure add(x,y,z:longint);
@@ -89,14 +89,14 @@ begin
   end;
  diameter;
  for i:=1 to m do treedp(a[i]);
- j:=1;
+ j:=m;
  ans:=maxlongint;
  temp:=0;
  for i:=1 to m do temp:=max(temp,f[a[i]]);
- for i:=1 to m do
+ for i:=m downto 1 do
   begin
-   while (j<=m)and(d[a[j]]-d[a[i]]<=s) do inc(j);
-   ans:=min(ans,max(temp,max(d[a[i]],d[a[m]]-d[a[j-1]])));
+   while (j>=1)and(d[a[j]]-d[a[i]]<=s) do dec(j);
+   ans:=min(ans,max(temp,max(d[a[i]],d[a[1]]-d[a[j+1]])));
   end;
  writeln(ans);
 end.
