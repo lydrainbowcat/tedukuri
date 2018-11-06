@@ -20,7 +20,7 @@ void parse_st_ed() {  // 处理起点和终点
 				ed.x = i, ed.y = j, ed.lie = 0, s[i][j] = '.';
 			}
 			else if (s[i][j] == 'X') {
-				for (int k = 0; k < 3; k++) {
+				for (int k = 0; k < 4; k++) {
 					int x = i + dx[k], y = j + dy[k];
 					if (valid(x, y) && s[x][y] == 'X') {
 						st.x = min(i,x), st.y = min(j,y), st.lie = k<2?1:2;
