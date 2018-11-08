@@ -34,3 +34,56 @@ int ask(int p, int l, int r) {
 }
 
 cout << ask(1, l, r) << endl; // 调用入口
+
+// 动态开点的线段树
+struct SegmentTree {
+    int lc, rc; // 左右子节点的编号
+	int dat;
+} tr[SIZE * 2];
+int root, tot;
+
+int build() { // 新建一个节点
+	tot++;
+	tr[tot].lc = tr[tot].rc = tr[tot].dat = 0;
+	return tot;
+}
+
+// 在main函数中
+tot = 0;
+root = build(); // 根节点
+
+// 单点修改，在val位置加delta，维护区间最大值
+void insert(int p, int l, int r, int val, int delta) {
+    if (l == r) {
+        tr[p].dat += delta;
+        return;
+    }
+    int mid = (l + r) >> 1; // 代表的区间[l,r]作为递归参数传递
+    if (val <= mid) {
+        if (!tr[p].lc) tr[p].lc = build(); // 左子树不存在，动态开点
+        insert(tr[p].lc, l, mid, val, delta);
+    }
+    else {
+        if (!tr[p].rc) tr[p].rc = build(); // 右子树不存在，动态开点
+        insert(tr[p].rc, mid + 1, r, val, delta);
+    }
+    tr[p].dat = max(tr[tr[p].lc].dat, tr[tr[p].rc].dat);
+}
+
+// 调用
+insert(root, 1, n, val, delta);
+
+// 合并两棵线段树
+int merge(int p, int q, int l, int r) {
+    if (!p) return q; // p,q之一为空
+    if (!q) return p;
+    if (l == r) { // 到达叶子
+        tr[p].dat += tr[q].dat;
+        return p;
+    }
+    int mid = (l + r) >> 1;
+    tr[p].lc = merge(tr[p].lc, tr[q].lc, l, mid); // 递归合并左子树
+    tr[p].rc = merge(tr[p].rc, tr[q].rc, mid + 1, r); // 递归合并右子树
+    tr[p].dat = max(tr[tr[p].lc].dat, tr[tr[p].rc].dat); // 更新最值
+    return p; // 以p为合并后的节点，相当于删除q
+}
