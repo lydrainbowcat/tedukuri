@@ -1,4 +1,4 @@
-#include <cmath>
+﻿#include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
@@ -6,7 +6,7 @@ using namespace std;
 
 pair<long long, long long> calc(int n, long long m) {
     if (n == 0) return make_pair(0, 0);
-    long long len = 1 << (n - 1), cnt = 1 << (2 * n - 2);
+    long long len = 1ll << (n - 1), cnt = 1ll << (2 * n - 2);
     pair<long long, long long> pos = calc(n - 1, m % cnt); // 递归
     long long x = pos.first, y = pos.second;
     long long z = m / cnt;
