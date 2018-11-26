@@ -50,29 +50,31 @@ int GetNext(int val) {
 	return ans;
 }
 
-void Remove(int val) {
-	// 检索val，得到节点p
-	int &p = root;
-	while (p) {
-		if (val == a[p].val) break;
-		p = val < a[p].val ? a[p].l : a[p].r;
-	}
+void Remove(int &p, int val) { // 从子树p中删除值为val的节点
 	if (p == 0) return;
-	if (a[p].l == 0) { // 没有左子树
-		p = a[p].r; // 右子树代替p的位置，注意p是引用
+	if (val == a[p].val) { // 已经检索到值为val的节点
+		if (a[p].l == 0) { // 没有左子树
+			p = a[p].r; // 右子树代替p的位置，注意p是引用
+		}
+		else if (a[p].r == 0) { // 没有右子树
+			p = a[p].l; // 左子树代替p的位置，注意p是引用
+		}
+		else { // 既有左子树又有右子树
+			// 求后继节点
+			int next = a[p].r;
+			while (a[next].l > 0) next = a[next].l;
+			// next一定没有左子树，直接删除
+			Remove(a[p].r, a[next].val);
+			// 令节点next代替节点p的位置
+			a[next].l = a[p].l, a[next].r = a[p].r;
+			p = next; // 注意p是引用
+		}
+		return;
 	}
-	else if (a[p].r == 0) { // 没有右子树
-		p = a[p].l; // 左子树代替p的位置，注意p是引用
-	}
-	else { // 既有左子树又有右子树
-		// 求后继节点
-		int next = a[p].r;
-		while (a[next].l > 0) next = a[next].l;
-		// next一定没有左子树，直接删除
-		Remove(a[next].val);
-		// 令节点next代替节点p的位置
-		a[next].l = a[p].l, a[next].r = a[p].r;
-		p = next; // 注意p是引用
+	if (val < a[p].val) {
+		Remove(a[p].l, val);
+	} else {
+		Remove(a[p].r, val);
 	}
 }
 

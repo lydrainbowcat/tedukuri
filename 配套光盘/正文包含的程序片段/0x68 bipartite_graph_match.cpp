@@ -1,4 +1,4 @@
-// 二分图最大匹配：匈牙利算法
+﻿// 二分图最大匹配：匈牙利算法
 bool dfs(int x) {
 	for (int i = head[x], y; i; i = next[i])
 		if (!visit[y = ver[i]]) {
@@ -22,7 +22,7 @@ int w[N][N]; // 边权
 int la[N], lb[N]; // 左、右部点的顶标
 bool va[N], vb[N]; // 访问标记：是否在交错树中
 int match[N]; // 右部点匹配了哪一个左部点
-int n, delta;
+int n, delta, upd[N];
 
 bool dfs(int x) {
 	va[x] = 1; // 访问标记：x在交错树中
@@ -35,7 +35,7 @@ bool dfs(int x) {
 					return true;
 				}
 			}
-			else delta = min(delta, la[x] + lb[y] - w[x][y]);
+			else upd[y] = min(upd[y], la[x] + lb[y] - w[x][y]);
 	return false;
 }
 
@@ -51,7 +51,10 @@ int KM() {
 			memset(va, 0, sizeof(va));
 			memset(vb, 0, sizeof(vb));
 			delta = 1 << 30; // inf
+			for (int j = 1; j <= n; j++) upd[j] = 1 << 30; 
 			if (dfs(i)) break;
+			for (int j = 1; j <= n; j++)
+				if (!vb[j]) delta = min(delta, upd[j]);
 			for (int j = 1; j <= n; j++) { // 修改顶标
 				if (va[j]) la[j] -= delta;
 				if (vb[j]) lb[j] += delta;
