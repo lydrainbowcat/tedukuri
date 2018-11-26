@@ -1,14 +1,14 @@
-#include<iostream>
+ï»¿#include<iostream>
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
 #include<vector>
 using namespace std;
 int n;
-int order[20]; // °´Ë³ĞòÒÀ´Î¼ÇÂ¼±»Ñ¡ÔñµÄÕûÊı
-bool chosen[20]; // ±ê¼Ç±»Ñ¡ÔñµÄÕûÊı
+int order[20]; // æŒ‰é¡ºåºä¾æ¬¡è®°å½•è¢«é€‰æ‹©çš„æ•´æ•°
+bool chosen[20]; // æ ‡è®°è¢«é€‰æ‹©çš„æ•´æ•°
 void calc(int k) {
-	if (k == n + 1) { // ÎÊÌâ±ß½ç
+	if (k == n + 1) { // é—®é¢˜è¾¹ç•Œ
 		for (int i = 1; i <= n; i++)
 			printf("%d ", order[i]);
 		puts("");
@@ -20,11 +20,11 @@ void calc(int k) {
 		chosen[i] = 1;
 		calc(k + 1); 
 		chosen[i] = 0;
-		order[k] = 0; // ÕâÒ»ĞĞ¿ÉÒÔÊ¡ÂÔ
+		order[k] = 0; // è¿™ä¸€è¡Œå¯ä»¥çœç•¥
 	}
 }
 int main() { 
 	cin >> n;
-	calc(1);  // Ö÷º¯ÊıÖĞµÄµ÷ÓÃÈë¿Ú
+	calc(1);  // ä¸»å‡½æ•°ä¸­çš„è°ƒç”¨å…¥å£
 }
 

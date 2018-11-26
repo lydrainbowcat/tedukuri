@@ -1,4 +1,4 @@
-#include<iostream>
+ï»¿#include<iostream>
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
@@ -6,15 +6,15 @@
 using namespace std;
 vector<int> chosen;
 int stack[100010], top = 0, address = 0, n, m;
-void call(int x, int ret_addr) { // Ä£Äâ¼ÆËã»ú»ã±àÖ¸Áîcall
+void call(int x, int ret_addr) { // æ¨¡æ‹Ÿè®¡ç®—æœºæ±‡ç¼–æŒ‡ä»¤call
 	int old_top = top;
-	stack[++top] = x; // ²ÎÊýx
-	stack[++top] = ret_addr; // ·µ»ØµØÖ·±êºÅ
-	stack[++top] = old_top; // ÔÚÕ»¶¥¼ÇÂ¼ÒÔÇ°µÄtopÖµ
+	stack[++top] = x; // å‚æ•°x
+	stack[++top] = ret_addr; // è¿”å›žåœ°å€æ ‡å·
+	stack[++top] = old_top; // åœ¨æ ˆé¡¶è®°å½•ä»¥å‰çš„topå€¼
 }
-int ret() { // Ä£Äâ¼ÆËã»ú»ã±àÖ¸Áîret
+int ret() { // æ¨¡æ‹Ÿè®¡ç®—æœºæ±‡ç¼–æŒ‡ä»¤ret
 	int ret_addr = stack[top - 1];
-	top = stack[top]; // »Ö¸´ÒÔÇ°µÄtopÖµ
+	top = stack[top]; // æ¢å¤ä»¥å‰çš„topå€¼
 	return ret_addr;
 }
 
@@ -22,7 +22,7 @@ int main() {
 	cin >> n >> m;
 	call(1, 0); // calc(1)
 	while (top) {
-		int x = stack[top - 2]; // »ñÈ¡²ÎÊý
+		int x = stack[top - 2]; // èŽ·å–å‚æ•°
 		switch (address) {
 		case 0:
 			if (chosen.size()>m || chosen.size()+(n-x+1)<m) {
@@ -37,16 +37,16 @@ int main() {
 				continue;
 			}
 			chosen.push_back(x);
-			call(x+1, 1); // Ïàµ±ÓÚcalc(x+1)£¬·µ»Øºó»á´Ócase 1¼ÌÐø
+			call(x+1, 1); // ç›¸å½“äºŽcalc(x+1)ï¼Œè¿”å›žåŽä¼šä»Žcase 1ç»§ç»­
 			address = 0;
-			continue; // »Øµ½whileÑ­»·¿ªÍ·£¬Ïàµ±ÓÚ¿ªÊ¼ÐÂµÄµÝ¹é
+			continue; // å›žåˆ°whileå¾ªçŽ¯å¼€å¤´ï¼Œç›¸å½“äºŽå¼€å§‹æ–°çš„é€’å½’
 		case 1:
 			chosen.pop_back();
-			call(x+1, 2); // Ïàµ±ÓÚcalc(x+1)£¬·µ»Øºó»á´Ócase 2¼ÌÐø
+			call(x+1, 2); // ç›¸å½“äºŽcalc(x+1)ï¼Œè¿”å›žåŽä¼šä»Žcase 2ç»§ç»­
 			address = 0;
-			continue; // »Øµ½whileÑ­»·¿ªÍ·£¬Ïàµ±ÓÚ¿ªÊ¼ÐÂµÄµÝ¹é
+			continue; // å›žåˆ°whileå¾ªçŽ¯å¼€å¤´ï¼Œç›¸å½“äºŽå¼€å§‹æ–°çš„é€’å½’
 		case 2:
-			address = ret(); // Ïàµ±ÓÚÔ­calcº¯Êý½áÎ²£¬Ö´ÐÐreturn
+			address = ret(); // ç›¸å½“äºŽåŽŸcalcå‡½æ•°ç»“å°¾ï¼Œæ‰§è¡Œreturn
 		}
 	}
 }

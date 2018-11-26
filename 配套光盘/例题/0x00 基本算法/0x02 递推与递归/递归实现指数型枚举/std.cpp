@@ -1,26 +1,26 @@
-#include<iostream>
+ï»¿#include<iostream>
 #include<cstdio>
 #include<cstring>
 #include<algorithm>
 #include<vector>
 using namespace std;
 int n;
-vector<int> chosen; // ±»Ñ¡ÔñµÄÊı
+vector<int> chosen; // è¢«é€‰æ‹©çš„æ•°
 void calc(int x) {
-	if (x == n + 1) { // ÎÊÌâ±ß½ç
+	if (x == n + 1) { // é—®é¢˜è¾¹ç•Œ
 		for (int i = 0; i < chosen.size(); i++)
 			printf("%d ", chosen[i]);
 		puts("");
 		return;
 	}
-    //"²»Ñ¡x"·ÖÖ§
-	calc(x + 1); // Çó½â×ÓÎÊÌâ
-	//"Ñ¡x"·ÖÖ§
-	chosen.push_back(x); // ¼ÇÂ¼xÒÑ±»Ñ¡Ôñ
-	calc(x + 1); // Çó½â×ÓÎÊÌâ 
-	chosen.pop_back(); // ×¼±¸»ØËİµ½ÉÏÒ»ÎÊÌâÖ®Ç°£¬»¹Ô­ÏÖ³¡
+    //"ä¸é€‰x"åˆ†æ”¯
+	calc(x + 1); // æ±‚è§£å­é—®é¢˜
+	//"é€‰x"åˆ†æ”¯
+	chosen.push_back(x); // è®°å½•xå·²è¢«é€‰æ‹©
+	calc(x + 1); // æ±‚è§£å­é—®é¢˜ 
+	chosen.pop_back(); // å‡†å¤‡å›æº¯åˆ°ä¸Šä¸€é—®é¢˜ä¹‹å‰ï¼Œè¿˜åŸç°åœº
 }
 int main() {
 	cin >> n;
-	calc(1);  // Ö÷º¯ÊıÖĞµÄµ÷ÓÃÈë¿Ú
+	calc(1);  // ä¸»å‡½æ•°ä¸­çš„è°ƒç”¨å…¥å£
 }

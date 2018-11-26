@@ -1,6 +1,5 @@
 /*
 	Author: Yuanhao Li, Peking University
-	本程序仅供参考 
 */
 #include <iostream>
 #include <cstdio>
