@@ -11,7 +11,7 @@ int calc_min(char *s) {
 	for (int i = 1; i <= n; i++) s[n+i] = s[i];
 	int i = 1, j = 2, k;
 	while (i <= n && j <= n) {
-		for (k = 0; k <= n && s[i+k] == s[j+k]; k++);
+		for (k = 0; k < n && s[i+k] == s[j+k]; k++);
 		if (k == n) break;
 		if (s[i+k] > s[j+k]) {
 			i = i + k + 1;

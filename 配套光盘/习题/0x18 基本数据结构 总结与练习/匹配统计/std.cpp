@@ -11,17 +11,17 @@ int n, m, q;
 int main()
 {
 	cin >> n >> m >> q;
-	scanf("%s", a + 1); // A[1..n]±£¥ÊA¥Æ
-	scanf("%s", b + 1); // B[1..n]±£¥ÊB¥Æ
+	scanf("%s", a + 1); // A[1..n]‰øùÂ≠òA‰∏≤
+	scanf("%s", b + 1); // B[1..n]‰øùÂ≠òB‰∏≤
 
-	for (int i = 2, j = 0; i <= m; i++) // ∂‘B¥Æ◊‘∆•≈‰£¨«Ûnext ˝◊È
+	for (int i = 2, j = 0; i <= m; i++) // ÂØπB‰∏≤Ëá™ÂåπÈÖçÔºåÊ±ÇnextÊï∞ÁªÑ
 	{
 		while (j>0 && b[j + 1] != b[i]) j = next[j];
 		if (b[j + 1] == b[i]) j++;
 		next[i] = j;
 	}
 
-	for (int i = 1, j = 0; i <= n; i++) // A¥Æ”ÎB¥ÆΩ¯––ƒ£ Ω∆•≈‰
+	for (int i = 1, j = 0; i <= n; i++) // A‰∏≤‰∏éB‰∏≤ËøõË°åÊ®°ÂºèÂåπÈÖç
 	{
 		while (j>0 && (j == m || a[i] != b[j + 1])) j = next[j];
 		if (a[i] == b[j + 1]) j++;
@@ -31,7 +31,7 @@ int main()
 	for (int i = 1; i <= n; i++) cnt[f[i]]++;
 	for (int i = n; i; i--) cnt[next[i]] += cnt[i];
 
-	// ¥À ±cnt[x]±£¥Êµƒ «∆•≈‰≥§∂»>=xµƒŒª÷√∏ˆ ˝
+	// Ê≠§Êó∂cnt[x]‰øùÂ≠òÁöÑÊòØÂåπÈÖçÈïøÂ∫¶>=xÁöÑ‰ΩçÁΩÆ‰∏™Êï∞
 
 	for (int i = 1; i <= q; i++)
 	{

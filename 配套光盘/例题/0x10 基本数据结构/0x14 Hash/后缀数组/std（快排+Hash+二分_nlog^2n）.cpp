@@ -12,7 +12,7 @@ unsigned long long get_hash(int l, int r) {
 	return f[r] - f[l-1] * power[r-l+1];
 }
 
-// ×î³¤¹«¹²Ç°×º£¬¶ş·Ö+Hash 
+// æœ€é•¿å…¬å…±å‰ç¼€ï¼ŒäºŒåˆ†+Hash 
 int lcp(int x,int y) {
 	int l=0, r=min(n-x+1,n-y+1);
 	while(l<r) {
@@ -36,7 +36,7 @@ void calc_height() {
 
 int main()
 {
-	// ÏÂ±ê1~n£¬Êä³öÊ±ÔÙ±ä»Ø0~n-1 
+	// ä¸‹æ ‡1~nï¼Œè¾“å‡ºæ—¶å†å˜å›0~n-1 
 	scanf("%s", str + 1);
 	n = strlen(str + 1);
 	power[0] = 1;

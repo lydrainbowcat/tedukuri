@@ -9,7 +9,7 @@ int a[size + 1];
 int i, j, k, sa[size + 1], rk[size + 1], height[size + 1], l, p[size + 1], mid, tmp;
 char str[size];
 
-void sort_str(int l, int r)  //¶Ô×Ö·û´®½øĞĞÅÅĞò£¬ÕâÀïÓÃµÄÊÇ¿ìËÙÅÅĞò£¬×îºÃÓÃ»ùÊıÅÅĞò
+void sort_str(int l, int r)  //å¯¹å­—ç¬¦ä¸²è¿›è¡Œæ’åºï¼Œè¿™é‡Œç”¨çš„æ˜¯å¿«é€Ÿæ’åºï¼Œæœ€å¥½ç”¨åŸºæ•°æ’åº
 {
 	int i, j;
 	i = l; j = r;
@@ -27,7 +27,7 @@ void sort_str(int l, int r)  //¶Ô×Ö·û´®½øĞĞÅÅĞò£¬ÕâÀïÓÃµÄÊÇ¿ìËÙÅÅĞò£¬×îºÃÓÃ»ùÊıÅ
 	if (i<r) sort_str(i, r);
 	if (l<j) sort_str(l, j);
 }
-void calc1(int i, int j)  //¼ÆËãrkĞÅÏ¢
+void calc1(int i, int j)  //è®¡ç®—rkä¿¡æ¯
 {
 	sort_str(i, j - 1);
 	rk[sa[i]] = i;
@@ -41,30 +41,30 @@ void calc()
 	{
 		sa[i] = i;
 		p[i] = a[i];
-	} //³õÊ¼»¯
-	calc1(0, n);//µÚÒ»´ÎÅÅĞò
-	l = 1;//lÎª±¶Ôö³¤¶È
+	} //åˆå§‹åŒ–
+	calc1(0, n);//ç¬¬ä¸€æ¬¡æ’åº
+	l = 1;//lä¸ºå€å¢é•¿åº¦
 	while (l < n)
 	{
-		for (i = 0; i + l < n; i++) p[i] = rk[i + l];  //¸üĞÂpl
+		for (i = 0; i + l < n; i++) p[i] = rk[i + l];  //æ›´æ–°pl
 		for (i; i < n; i++) p[i] = -1;
-		for (i = 0; i < n; i = j)//¸ù¾İl½øĞĞÅÅĞò
+		for (i = 0; i < n; i = j)//æ ¹æ®lè¿›è¡Œæ’åº
 		{
 			j = i;
 			while (rk[sa[i]] == rk[sa[j]] && j<n) j++;
 			calc1(i, j);
 		}
-		l += l; //±¶Ôöl
+		l += l; //å€å¢l
 	}
-	//ÇóheightÊı×é
+	//æ±‚heightæ•°ç»„
 	for (i = 0; i < n; i++)
 	if (j = rk[i])
 	{
 		if (i) l = height[rk[i - 1]] - 1;
 		else l = 0;
-		if (l < 0) l = 0;  //lÎªÏÂ½ç
+		if (l < 0) l = 0;  //lä¸ºä¸‹ç•Œ
 		while (a[i + l] == a[sa[j - 1] + l]) l++;
-		height[j] = l;  //¸üĞÂheightÊı×é
+		height[j] = l;  //æ›´æ–°heightæ•°ç»„
 	}
 	else height[0] = 0;
 }
