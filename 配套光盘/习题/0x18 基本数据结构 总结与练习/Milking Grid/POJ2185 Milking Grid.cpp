@@ -1,4 +1,5 @@
 //Author:XuHt
+#include <cstdio>
 #include <cstring>
 #include <iostream>
 #define ll long long
