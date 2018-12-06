@@ -9,12 +9,12 @@ int n, m, deg[30010], a[30010];
 int ver[30010], Next[30010], head[30010], tot, cnt;
 bitset<30010> f[30010];
 
-void add(int x, int y) { // ÔÚÁÚ½Ó±íÖĞÌí¼ÓÒ»ÌõÓĞÏò±ß
+void add(int x, int y) { // åœ¨é‚»æ¥è¡¨ä¸­æ·»åŠ ä¸€æ¡æœ‰å‘è¾¹
 	ver[++tot] = y, Next[tot] = head[x], head[x] = tot;
 	deg[y]++;
 }
 
-void topsort() { // ÍØÆËÅÅĞò
+void topsort() { // æ‹“æ‰‘æ’åº
 	queue<int> q;
 	for (int i = 1; i <= n; i++)
 		if (deg[i] == 0) q.push(i);
@@ -40,7 +40,7 @@ void calc() {
 }
 
 int main() {
-	cin >> n >> m; // µãÊı¡¢±ßÊı
+	cin >> n >> m; // ç‚¹æ•°ã€è¾¹æ•°
 	for (int i = 1; i <= m; i++) {
 		int x, y;
 		scanf("%d%d", &x, &y);

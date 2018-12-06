@@ -10,11 +10,11 @@ void dfs(int now, int cnt) {
 		ans = min(ans, cnt);
 		return;
 	}
-	for (int i = 1; i <= cnt; i++) {  // ·ÖÅäµ½ÒÑ×âÓÃÀÂ³µ
-		if (cab[i] + c[now] <= w) {   // ÄÜ×°ÏÂ
+	for (int i = 1; i <= cnt; i++) {  // åˆ†é…åˆ°å·²ç§Ÿç”¨ç¼†è½¦
+		if (cab[i] + c[now] <= w) {   // èƒ½è£…ä¸‹
 			cab[i] += c[now];
 			dfs(now+1, cnt);
-			cab[i] -= c[now];         // »¹Ô­ÏÖ³¡
+			cab[i] -= c[now];         // è¿˜åŸç°åœº
 		}
 	}
 	cab[cnt+1] = c[now];
@@ -26,7 +26,7 @@ int main() {
 	for (int i = 1; i <= n; i++) cin >> c[i];
 	sort(c + 1, c + n + 1);
 	reverse(c + 1, c + n + 1);
-	ans = n;    // ×î¶àÓÃnÁ¾ÀÂ³µ£¬Ã¿Ö»Ã¨Ò»Á¾
-	dfs(1, 0);  // ËÑË÷Èë¿Ú
+	ans = n;    // æœ€å¤šç”¨nè¾†ç¼†è½¦ï¼Œæ¯åªçŒ«ä¸€è¾†
+	dfs(1, 0);  // æœç´¢å…¥å£
 	cout << ans << endl;
 }
