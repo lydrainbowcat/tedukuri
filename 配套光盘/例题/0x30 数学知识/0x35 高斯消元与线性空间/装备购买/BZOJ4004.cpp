@@ -17,23 +17,23 @@ int main() {
 		double temp; scanf("%lf", &temp); c[i] = temp;
 	} 
 	int dim = 0;
-	// ¶ÔÃ¿¸öÎ´ÖªÁ¿xi½øĞĞÒ»´ÎÏûÔª 
+	// å¯¹æ¯ä¸ªæœªçŸ¥é‡xiè¿›è¡Œä¸€æ¬¡æ¶ˆå…ƒ 
 	for (int i = 1; i <= m; i++) {
-		// ÕÒµ½xiÏµÊı²»Îª0¡¢¼Û¸ñ×îµÍµÄÒ»¸ö
+		// æ‰¾åˆ°xiç³»æ•°ä¸ä¸º0ã€ä»·æ ¼æœ€ä½çš„ä¸€ä¸ª
 		int now = 0;
 		for (int j = dim + 1; j <= n; j++) {
 			if (fabs(a[j][i]) > eps && (now == 0 || c[j] < c[now]))
 				now = j;
 		}
-		// xiÊÇ×ÔÓÉÔª 
+		// xiæ˜¯è‡ªç”±å…ƒ 
 		if (now == 0) continue;
-		// Ïò»ùµ×ÖĞÔö¼ÓÒ»¸öÏòÁ¿ 
+		// å‘åŸºåº•ä¸­å¢åŠ ä¸€ä¸ªå‘é‡ 
 		dim++;
 		ans += c[now];
 		for (int j = 1; j <= m; j++)
 			swap(a[now][j], a[dim][j]);
 		swap(c[now], c[dim]);
-		// ÏûÈ¥ÆäËüĞĞÖĞµÚiÁĞµÄÖµ 
+		// æ¶ˆå»å…¶å®ƒè¡Œä¸­ç¬¬iåˆ—çš„å€¼ 
 		for (int j = 1; j <= n; j++)
 			if (dim != j && fabs(a[j][i]) > eps) {
 				long double rate = a[j][i] / a[dim][i];

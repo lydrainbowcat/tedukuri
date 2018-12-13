@@ -6,18 +6,18 @@ using namespace std;
 int v[1010], prime[1010], phi[1010], sum[1010], m, t, n;
 
 void euler(int n) {
-	memset(v, 0, sizeof(v)); // ×îĞ¡ÖÊÒò×Ó
-	m = 0; // ÖÊÊıÊıÁ¿
+	memset(v, 0, sizeof(v)); // æœ€å°è´¨å› å­
+	m = 0; // è´¨æ•°æ•°é‡
 	for (int i = 2; i <= n; i++) {
-		if (v[i] == 0) { // iÊÇÖÊÊı
+		if (v[i] == 0) { // iæ˜¯è´¨æ•°
 			v[i] = i, prime[++m] = i;
 			phi[i] = i - 1;
 		}
-		// ¸øµ±Ç°µÄÊıi³ËÉÏÒ»¸öÖÊÒò×Ó
+		// ç»™å½“å‰çš„æ•°iä¹˜ä¸Šä¸€ä¸ªè´¨å› å­
 		for (int j = 1; j <= m; j++) {
-			// iÓĞ±Èprime[j]¸üĞ¡µÄÖÊÒò×Ó£¬»òÕß³¬³önµÄ·¶Î§
+			// iæœ‰æ¯”prime[j]æ›´å°çš„è´¨å› å­ï¼Œæˆ–è€…è¶…å‡ºnçš„èŒƒå›´
 			if (prime[j] > v[i] || prime[j] > n / i) break;
-			// prime[j]ÊÇºÏÊıi*prime[j]µÄ×îĞ¡ÖÊÒò×Ó
+			// prime[j]æ˜¯åˆæ•°i*prime[j]çš„æœ€å°è´¨å› å­
 			v[i*prime[j]] = prime[j];
 			phi[i*prime[j]] = phi[i] * (i%prime[j] ? prime[j]-1 : prime[j]);
 		}
