@@ -5,8 +5,8 @@
 #include<cmath>
 using namespace std;
 long long a[100010], sum[100010], add[100010];
-int L[100010], R[100010]; // Ã¿¶Î×óÓÒ¶Ëµã
-int pos[100010]; // Ã¿¸öÎ»ÖÃÊôÓÚÄÄÒ»¶Î
+int L[100010], R[100010]; // æ¯æ®µå·¦å³ç«¯ç‚¹
+int pos[100010]; // æ¯ä¸ªä½ç½®å±žäºŽå“ªä¸€æ®µ
 int n, m, t;
 
 void change(int l, int r, long long d) {
@@ -45,20 +45,20 @@ long long ask(int l, int r) {
 int main() {
 	cin >> n >> m;
 	for (int i = 1; i <= n; i++) scanf("%lld", &a[i]);
-	// ·Ö¿é
+	// åˆ†å—
 	t = sqrt(n*1.0);
 	for (int i = 1; i <= t; i++) {
 		L[i] = (i - 1)*sqrt(n*1.0) + 1;
 		R[i] = i*sqrt(n*1.0);
 	}
 	if (R[t] < n) t++, L[t] = R[t - 1] + 1, R[t] = n;
-	// Ô¤´¦Àí
+	// é¢„å¤„ç†
 	for (int i = 1; i <= t; i++)
 		for (int j = L[i]; j <= R[i]; j++) {
 			pos[j] = i;
 			sum[i] += a[j];
 		}
-	// Ö¸Áî
+	// æŒ‡ä»¤
 	while (m--) {
 		char op[3];
 		int l, r, d;
