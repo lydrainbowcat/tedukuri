@@ -6,7 +6,7 @@
 using namespace std;
 int a[310][310], d[310][310], pos[310][310];
 int n, m, ans = 0x3f3f3f3f;
-vector<int> path; //具体方案
+vector<int> path; //鍏蜂綋鏂规
 void get_path(int x, int y) {
 	if (pos[x][y] == 0) return;
 	get_path(x, pos[x][y]);
