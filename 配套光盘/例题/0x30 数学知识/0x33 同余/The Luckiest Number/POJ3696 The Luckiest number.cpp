@@ -51,7 +51,7 @@ ll number() {
 	for (i = 1; i <= s; i++)
 		if (p % i == 0 && ksm(10ll, i, k) == 1)
 			return i;
-	for (i = s - 1; i; i--)
+	for (i = s; i; i--)
 		if (p % i == 0 && ksm(10ll, p / i, k) == 1)
 			return p / i;
 	return 0;
