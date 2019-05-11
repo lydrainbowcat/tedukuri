@@ -12,13 +12,13 @@ void add(int x, int y, int z) {
 }
 
 void dp(int x) {
-	v[x] = 1; // ·ÃÎÊ±ê¼Ç
+	v[x] = 1; // è®¿é—®æ ‡è®°
 	d[x] = 0;
-	for (int i = head[x]; i; i = Next[i]) { // ÁÚ½Ó±í´æ´¢
+	for (int i = head[x]; i; i = Next[i]) { // é‚»æ¥è¡¨å­˜å‚¨
 		int y = ver[i];
 		if (v[y]) continue;
 		dp(y);
-		if (deg[y] == 1) d[x] += edge[i]; // edge[i]±£´æc(x,y)
+		if (deg[y] == 1) d[x] += edge[i]; // edge[i]ä¿å­˜c(x,y)
 		else d[x] += min(d[y], edge[i]); 
 	}
 }
@@ -48,7 +48,7 @@ int main() {
 			add(x, y, z), add(y, x, z);
 			deg[x]++, deg[y]++;
 		}
-		int root = 1; // ÈÎÑ¡Ò»¸öµãÎªÔ´µã
+		int root = 1; // ä»»é€‰ä¸€ä¸ªç‚¹ä¸ºæºç‚¹
 		dp(root);
 		for (int i = 1; i <= n; i++) v[i] = 0;
 		f[root] = d[root];

@@ -1,4 +1,4 @@
-// POJ1733 À©Õ¹Óò²¢²é¼¯×ö·¨
+// POJ1733 æ‰©å±•åŸŸå¹¶æŸ¥é›†åšæ³•
 #include<iostream>
 #include<cstdio>
 #include<cstring>
@@ -7,7 +7,7 @@
 using namespace std;
 struct { int l, r, ans; } query[10010];
 int a[20010], fa[40010], n, m, t;
-void read_discrete() { // ¶ÁÈë¡¢ÀëÉ¢»¯
+void read_discrete() { // è¯»å…¥ã€ç¦»æ•£åŒ–
 	cin >> n >> m;
 	for (int i = 1; i <= m; i++) {
 		char str[5];
@@ -27,27 +27,27 @@ int main() {
 	read_discrete();
 	for (int i = 1; i <= 2 * n; i++) fa[i] = i;
 	for (int i = 1; i <= m; i++) {
-		// Çó³öl-1ºÍrÀëÉ¢»¯Ö®ºóµÄÖµ
+		// æ±‚å‡ºl-1å’Œrç¦»æ•£åŒ–ä¹‹åçš„å€¼
 		int x = lower_bound(a + 1, a + n + 1, query[i].l - 1) - a;
 		int y = lower_bound(a + 1, a + n + 1, query[i].r) - a;
 		int x_odd = x, x_even = x + n;
 		int y_odd = y, y_even = y + n;
-		if (query[i].ans == 0) { // »Ø´ğÆæÅ¼ĞÔÏàÍ¬
-			if (get(x_odd) == get(y_even)) { // ÓëÒÑÖªÇé¿öÃ¬¶Ü
+		if (query[i].ans == 0) { // å›ç­”å¥‡å¶æ€§ç›¸åŒ
+			if (get(x_odd) == get(y_even)) { // ä¸å·²çŸ¥æƒ…å†µçŸ›ç›¾
 				cout << i - 1 << endl;
 				return 0;
 			}
-			fa[get(x_odd)] = get(y_odd); // ºÏ²¢
+			fa[get(x_odd)] = get(y_odd); // åˆå¹¶
 			fa[get(x_even)] = get(y_even);
 		}
-		else { // »Ø´ğÆæÅ¼ĞÔ²»Í¬
-			if (get(x_odd) == get(y_odd)) { // ÓëÒÑÖªÇé¿öÃ¬¶Ü
+		else { // å›ç­”å¥‡å¶æ€§ä¸åŒ
+			if (get(x_odd) == get(y_odd)) { // ä¸å·²çŸ¥æƒ…å†µçŸ›ç›¾
 				cout << i - 1 << endl;
 				return 0;
 			}
-			fa[get(x_odd)] = get(y_even); // ºÏ²¢
+			fa[get(x_odd)] = get(y_even); // åˆå¹¶
 			fa[get(x_even)] = get(y_odd);
 		}
 	}
-	cout << m << endl; // Ã»ÓĞÃ¬¶Ü
+	cout << m << endl; // æ²¡æœ‰çŸ›ç›¾
 }

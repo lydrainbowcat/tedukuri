@@ -19,7 +19,7 @@ int main() {
 	for (int i = 1; i <= m; i++) {
 		int x, y, z;
 		scanf("%d%d%d", &x, &y, &z);
-		add(y, x, z); // ½¨·´Í¼
+		add(y, x, z); // å»ºåå›¾
 		deg[x]++; out[x]++;
 	}
 	q.push(n); 

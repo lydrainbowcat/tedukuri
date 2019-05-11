@@ -8,9 +8,8 @@ var
  f:array[0..500]of record x,y:longint; str:ansistring; end;
  vb:array[0..21,0..21,1..4]of boolean;
  vp:array[0..21,0..21]of boolean;
- l,r,sx,sy,bx,by,tx,ty,i,j,n,m,t:longint;
- target:boolean;
- s:ansistring;
+ l,r,sx,sy,bx,by,tx,ty,i,j,n,m,t,boxcnt,boxans:longint;
+ s,ans,route:ansistring;
 
 procedure scanf;
  begin
@@ -26,6 +25,13 @@ procedure scanf;
      end;
     readln;
    end;
+ end;
+
+procedure print(p:longint); // 递归得到方案，保存在字符串route里
+ begin
+  if q[p].last<>0 then print(q[p].last);
+  route:=route+q[p].str;
+  if q[p].str<'a' then inc(boxcnt);
  end;
 
 function bfsman(x,y:integer):boolean;
@@ -65,13 +71,24 @@ procedure push(x,y:integer; ch:char; s:ansistring; dire:integer);
   q[r].px:=q[l].x; q[r].py:=q[l].y;
   q[r].str:=s+ch;
   q[r].last:=l;
-  if (x=tx)and(y=ty) then begin target:=true; exit; end;
+  if (x=tx)and(y=ty) then // 到达终点，得到方案
+   begin
+    boxcnt:=0;
+    route:='';
+    print(r);
+    if (boxans=0)or((boxcnt=boxans)and(length(route)<length(ans))) then // 与现有的方案的箱子移动次数和总步数比较
+     begin
+      ans:=route;
+      boxans:=boxcnt;
+     end;
+    dec(r); // 终点状态就不用再扩展了
+   end;
  end;
 
 procedure bfsbox;
  begin
   fillchar(vb,sizeof(vb),0);
-  target:=false;
+  ans:=''; boxans:=0;
   l:=1; r:=1;
   q[1].x:=bx; q[1].y:=by;
   q[1].px:=sx; q[1].py:=sy;
@@ -81,26 +98,15 @@ procedure bfsbox;
     if (a[q[l].x-1,q[l].y]='.')and(a[q[l].x+1,q[l].y]='.') then
      begin
       if not vb[q[l].x-1,q[l].y,1] and bfsman(q[l].x+1,q[l].y) then push(q[l].x-1,q[l].y,'N',s,1);
-      if target then exit;
       if not vb[q[l].x+1,q[l].y,2] and bfsman(q[l].x-1,q[l].y) then push(q[l].x+1,q[l].y,'S',s,2);
-      if target then exit;
      end;
     if (a[q[l].x,q[l].y-1]='.')and(a[q[l].x,q[l].y+1]='.') then
      begin
       if not vb[q[l].x,q[l].y-1,3] and bfsman(q[l].x,q[l].y+1) then push(q[l].x,q[l].y-1,'W',s,3);
-      if target then exit;
       if not vb[q[l].x,q[l].y+1,4] and bfsman(q[l].x,q[l].y-1) then push(q[l].x,q[l].y+1,'E',s,4);
-      if target then exit;
      end;
     inc(l);
    end;
- end;
-
-procedure print(p:longint);
- begin
-  if q[p].last<>0 then print(q[p].last);
-  write(q[p].str);
-  if p=r then writeln;
  end;
 
 begin
@@ -111,7 +117,6 @@ begin
   scanf;
   bfsbox;
   writeln('Maze #',t);
-  if target then print(r) else writeln('Impossible.');
-  writeln;
+  writeln(ans);
  until false;
 end.

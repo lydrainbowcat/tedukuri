@@ -60,8 +60,6 @@ void stat (int x, int pere)
 }
 int main ()
 {
-    freopen("yam.in", "r", stdin);
-    freopen("yam.out", "w", stdout);
     scanf("%d %d", &n, &m), ginit();
     for (int i = 0; i < n - 1; i++)
     {
@@ -78,7 +76,5 @@ int main ()
     lca_tarjan(0, -1);
     ans = 0, stat(0, -1);
     printf("%d\n", ans);
-    fclose(stdin);
-    fclose(stdout);
     return 0;
 }

@@ -6,7 +6,7 @@
 using namespace std;
 struct { int l, r, ans; } query[10010];
 int a[20010], fa[20010], d[20010], n, m, t;
-void read_discrete() { // ¶ÁÈë¡¢ÀëÉ¢»¯
+void read_discrete() { // è¯»å…¥ã€ç¦»æ•£åŒ–
 	cin >> n >> m;
 	for (int i = 1; i <= m; i++) {
 		char str[5];
@@ -28,21 +28,21 @@ int main() {
 	read_discrete();
 	for (int i = 1; i <= n; i++) fa[i] = i;
 	for (int i = 1; i <= m; i++) {
-		// Çó³öl-1ºÍrÀëÉ¢»¯Ö®ºóµÄÖµ
+		// æ±‚å‡ºl-1å’Œrç¦»æ•£åŒ–ä¹‹åŽçš„å€¼
 		int x = lower_bound(a + 1, a + n + 1, query[i].l - 1) - a;
 		int y = lower_bound(a + 1, a + n + 1, query[i].r) - a;
-		// Ö´ÐÐgetº¯Êý£¬µÃµ½Ê÷¸ù£¬²¢½øÐÐÂ·¾¶Ñ¹Ëõ
+		// æ‰§è¡Œgetå‡½æ•°ï¼Œå¾—åˆ°æ ‘æ ¹ï¼Œå¹¶è¿›è¡Œè·¯å¾„åŽ‹ç¼©
 		int p = get(x), q = get(y);
-		if (p == q) { // ÒÑ¾­ÔÚÍ¬Ò»¼¯ºÏÄÚ
-			if ((d[x] ^ d[y]) != query[i].ans) { // Ã¬¶Ü£¬Êä³ö
+		if (p == q) { // å·²ç»åœ¨åŒä¸€é›†åˆå†…
+			if ((d[x] ^ d[y]) != query[i].ans) { // çŸ›ç›¾ï¼Œè¾“å‡º
 				cout << i - 1 << endl;
 				return 0;
 			}
 		}
-		else { // ²»ÔÚÍ¬Ò»¼¯ºÏ£¬ºÏ²¢
+		else { // ä¸åœ¨åŒä¸€é›†åˆï¼Œåˆå¹¶
 			fa[p] = q;
 			d[p] = d[x] ^ d[y] ^ query[i].ans;
 		}
 	}
-	cout << m << endl; // Ã»ÓÐÃ¬¶Ü
+	cout << m << endl; // æ²¡æœ‰çŸ›ç›¾
 }

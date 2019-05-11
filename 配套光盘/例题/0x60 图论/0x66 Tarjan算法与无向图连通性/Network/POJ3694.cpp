@@ -80,7 +80,7 @@ int get(int x) {
 
 int main() {
 	while (cin >> n >> m && n) {
-		// ¶à×éÊı¾İ£¬ÇåÁã
+		// å¤šç»„æ•°æ®ï¼Œæ¸…é›¶
 		tot = 1; num = dcc = 0;
 		for (int i = 1; i <= n; i++)
 			head[i] = dfn[i] = hc[i] = d[i] = c[i] = 0;
@@ -91,7 +91,7 @@ int main() {
 			scanf("%d%d", &x, &y);
 			add(x, y), add(y, x);
 		}
-		// Çó¸î±ß¡¢±ßË«Á¬Í¨·ÖÁ¿
+		// æ±‚å‰²è¾¹ã€è¾¹åŒè¿é€šåˆ†é‡
 		for (int i = 1; i <= n; i++)
 			if (!dfn[i]) tarjan(i, 0);
 		for (int i = 1; i <= n; i++)
@@ -99,18 +99,18 @@ int main() {
 				++dcc;
 				dfs(i);
 			}
-		// Ëõµã½¨Í¼
+		// ç¼©ç‚¹å»ºå›¾
 		tc = 1;
 		for (int i = 2; i <= tot; i++) {
 			int x = ver[i ^ 1], y = ver[i];
 			if (c[x] == c[y]) continue;
 			add_c(c[x], c[y]);
 		}
-		// ±¶ÔölcaÔ¤´¦Àí
+		// å€å¢lcaé¢„å¤„ç†
 		bfs();
-		// ²¢²é¼¯³õÊ¼»¯
+		// å¹¶æŸ¥é›†åˆå§‹åŒ–
 		for (int i = 1; i <= dcc; i++) fa[i] = i;
-		// ´¦ÀíÑ¯ÎÊ
+		// å¤„ç†è¯¢é—®
 		cin >> t;
 		int ans = dcc - 1;
 		printf("Case %d:\n", ++T);

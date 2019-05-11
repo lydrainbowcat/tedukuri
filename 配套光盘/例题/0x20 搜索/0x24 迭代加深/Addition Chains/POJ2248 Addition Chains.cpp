@@ -15,6 +15,7 @@ bool dfs(int now) {
 			if (num <= n && num > ans[now] && !v[num]) {
 				ans[now+1] = num;
 				if (dfs(now + 1)) return 1;
+				else v[num] = 1;
 			}
 		}
 	return 0;

@@ -5,10 +5,10 @@
 using namespace std;
 const int SIZE = 100010;
 struct Treap {
-	int l, r; // ×óÓÒ×Ó½ÚµãÔÚÊı×éÖĞµÄÏÂ±ê
-	int val, dat; // ½Úµã¹Ø¼üÂë¡¢È¨Öµ
-	int cnt, size; // ¸±±¾Êı¡¢×ÓÊ÷´óĞ¡
-} a[SIZE]; // Êı×éÄ£ÄâÁ´±í
+	int l, r; // å·¦å³å­èŠ‚ç‚¹åœ¨æ•°ç»„ä¸­çš„ä¸‹æ ‡
+	int val, dat; // èŠ‚ç‚¹å…³é”®ç ã€æƒå€¼
+	int cnt, size; // å‰¯æœ¬æ•°ã€å­æ ‘å¤§å°
+} a[SIZE]; // æ•°ç»„æ¨¡æ‹Ÿé“¾è¡¨
 int tot, root, n, INF = 0x7fffffff;
 
 int New(int val) {
@@ -65,11 +65,11 @@ void Insert(int &p, int val) {
 	}
 	if (val < a[p].val) {
 		Insert(a[p].l, val);
-		if (a[p].dat < a[a[p].l].dat) zig(p); // ²»Âú×ã¶ÑĞÔÖÊ£¬ÓÒĞı
+		if (a[p].dat < a[a[p].l].dat) zig(p); // ä¸æ»¡è¶³å †æ€§è´¨ï¼Œå³æ—‹
 	}
 	else {
 		Insert(a[p].r, val);
-		if (a[p].dat < a[a[p].r].dat) zag(p); // ²»Âú×ã¶ÑĞÔÖÊ£¬×óĞı
+		if (a[p].dat < a[a[p].r].dat) zag(p); // ä¸æ»¡è¶³å †æ€§è´¨ï¼Œå·¦æ—‹
 	}
 	Update(p);
 }
@@ -81,7 +81,7 @@ int GetPre(int val) {
 		if (val == a[p].val) {
 			if (a[p].l > 0) {
 				p = a[p].l;
-				while (a[p].r > 0) p = a[p].r; // ×ó×ÓÊ÷ÉÏÒ»Ö±ÏòÓÒ×ß
+				while (a[p].r > 0) p = a[p].r; // å·¦å­æ ‘ä¸Šä¸€ç›´å‘å³èµ°
 				ans = p;
 			}
 			break;
@@ -99,7 +99,7 @@ int GetNext(int val) {
 		if (val == a[p].val) {
 			if (a[p].r > 0) {
 				p = a[p].r;
-				while (a[p].l > 0) p = a[p].l; // ÓÒ×ÓÊ÷ÉÏÒ»Ö±Ïò×ó×ß
+				while (a[p].l > 0) p = a[p].l; // å³å­æ ‘ä¸Šä¸€ç›´å‘å·¦èµ°
 				ans = p;
 			}
 			break;
@@ -112,19 +112,19 @@ int GetNext(int val) {
 
 void Remove(int &p, int val) {
 	if (p == 0) return;
-	if (val == a[p].val) { // ¼ìË÷µ½ÁËval
-		if (a[p].cnt > 1) { // ÓĞÖØ¸´£¬¼õÉÙ¸±±¾Êı¼´¿É
+	if (val == a[p].val) { // æ£€ç´¢åˆ°äº†val
+		if (a[p].cnt > 1) { // æœ‰é‡å¤ï¼Œå‡å°‘å‰¯æœ¬æ•°å³å¯
 			a[p].cnt--, Update(p);
 			return;
 		}
-		if (a[p].l || a[p].r) { // ²»ÊÇÒ¶×Ó½Úµã£¬ÏòÏÂĞı×ª
+		if (a[p].l || a[p].r) { // ä¸æ˜¯å¶å­èŠ‚ç‚¹ï¼Œå‘ä¸‹æ—‹è½¬
 			if (a[p].r == 0 || a[a[p].l].dat > a[a[p].r].dat)
 				zig(p), Remove(a[p].r, val);
 			else
 				zag(p), Remove(a[p].l, val);
 			Update(p);
 		}
-		else p = 0; // Ò¶×Ó½Úµã£¬É¾³ı
+		else p = 0; // å¶å­èŠ‚ç‚¹ï¼Œåˆ é™¤
 		return;
 	}
 	val < a[p].val ? Remove(a[p].l, val) : Remove(a[p].r, val);

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <algorithm>
 using namespace std;
-const int N = 26;
+const int N = 26, INF = 0x3f3f3f3f;
 char A[4] = {'N','S','W','E'};
 char a[4] = {'n','s','w','e'};
 int r, c, num = 0;
@@ -71,10 +71,22 @@ string bfs1() {
 	q.push(st);
 	bool v[N][N][4];
 	memset(v, 0, sizeof(v));
+	string ans = "Impossible.";
+	unsigned int cntans = INF, cnt = INF;
 	while (q.size()) {
 		P prv, now = q.front(), nxt;
 		q.pop();
-		if (s[now.x][now.y] == 'T') return now.ans;
+		if (s[now.x][now.y] == 'T') {
+			unsigned int cntnow = 0;
+			for (unsigned int i = 0; i < now.ans.length(); i++)
+				if (now.ans[i] >= 'A' && now.ans[i] <= 'Z') ++cntnow;
+			if (cntnow < cntans || (cntnow == cntans && now.ans.length() < cnt)) {
+				ans = now.ans;
+				cntans = cntnow;
+				cnt = now.ans.length();
+			}
+			continue;
+		}
 		for (int i = 0; i < 4; i++) {
 			nxt = now;
 			nxt.x = now.x + d[i][0];
@@ -95,7 +107,7 @@ string bfs1() {
 			q.push(nxt);
 		}
 	}
-	return "Impossible.";
+	return ans;
 }
 
 void Pushing_Boxes() {
