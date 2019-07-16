@@ -1,15 +1,14 @@
-//Author:XuHt
+//Author:xht37
 #include <queue>
 #include <cstdio>
 #include <cstring>
 #include <iostream>
 #include <algorithm>
 using namespace std;
-const int N = 100006, M = 1000006;
-int n, m, tot = 0, Price[N];
+const int N = 1e5 + 6, M = 1e6 + 6;
+int n, m, tot, Price[N], Ans;
 int Head[N], Side[M], Next[M], ans[N];
 int fHead[N], fSide[M], fNext[M], fans[N];
-bool v[N], fv[N];
 priority_queue<pair<int, int> > q;
 priority_queue<pair<int, int> > fq;
 
@@ -43,8 +42,6 @@ int main() {
 	while (q.size()) {
 		int x = q.top().second;
 		q.pop();
-		if (v[x]) continue;
-		v[x] = 1;
 		for (int i = Head[x]; i; i = Next[i]) {
 			int y = Side[i];
 			if (ans[y] > ans[x]) {
@@ -57,8 +54,6 @@ int main() {
 	while (fq.size()) {
 		int x = fq.top().second;
 		fq.pop();
-		if (fv[x]) continue;
-		fv[x] = 1;
 		for (int i = fHead[x]; i; i = fNext[i]) {
 			int y = fSide[i];
 			if (fans[y] < fans[x]) {
@@ -68,7 +63,6 @@ int main() {
 			}
 		}
 	}
-	int Ans = 0;
 	for (int i = 1; i <= n; i++) Ans = max(Ans, fans[i]-ans[i]);
 	cout << Ans << endl;
 	return 0;
