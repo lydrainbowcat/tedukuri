@@ -1,8 +1,6 @@
 ﻿# tedukuri
 tedukuri 是「手作り」的意思，读作「てづくり」(近似英文 tezukuli)，指的是由《算法竞赛进阶指南》的作者、读者一起，用自己的双手共同维护的资源社区。为此，我们选择了 GitHub 这个世界上最大的 Programmer Community 作为支持平台。
 
-关于本书的发售问题或其他信息，请戳作者个人网站 http://www.lydshy.com 。
-
 ## Contents
 目前，这个repo里包含以下内容：
 - 第一版（2018年1月第一次印刷）最新勘误（更新于2018年6月5日）
@@ -19,7 +17,7 @@ tedukuri 是「手作り」的意思，读作「てづくり」(近似英文 tez
 2. 也可以在本地安装Git命令行或图形界面客户端，git clone(克隆)项目仓库，以后每次执行git pull都可以快速地增量更新。
 3. 还可以找到想要的文件，直接右键另存为（只能保存单个文件，不能保存文件夹，数据文件较多时会比较麻烦）。
 #### 如何做书中“OJ未收录”或“来源于非主流OJ”的题目？
-可以访问Contest Hunter上的[本书专用题库](http://contest-hunter.org:83/contest?type=1)，这里对书中大部分例题、习题均有收录，并公开测试数据和所有用户提交的代码。
+可以访问Contest Hunter上的[本书专用题库](http://contest-hunter.org:83/contest?type=1)，这里对书中大部分例题、习题均有收录，并公开测试数据和所有用户提交的代码。另外[AcWing](https://www.acwing.com/problem/search/1/?csrfmiddlewaretoken=5es0vcpy4xlqy4BgN1NrRvM2v71SA5MFBx3FxI4fCZaxQYjX2lpKSNmRPfEJmtHs&search_content=%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E8%BF%9B%E9%98%B6%E6%8C%87%E5%8D%97)也翻译并收录了本书全部题目。
 #### 如何做BZOJ隐藏题目？
 不熟悉的读者可能觉得书上的部分题目在BZOJ上找不到，这是因为BZOJ隐藏了部分题目（又称为权限题），只对收费的VIP用户开放。
 1. 可以联系BZOJ管理员，购买2年VIP服务，价格在几百元左右，到了NOI阶段BZOJ上的题目有很高的价值。
