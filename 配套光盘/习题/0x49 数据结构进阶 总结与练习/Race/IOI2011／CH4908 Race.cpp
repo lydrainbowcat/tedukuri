@@ -1,87 +1,77 @@
-//Author:XuHt
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <algorithm>
+//Author:xht37
+#include <bits/stdc++.h>
+#define pii pair<int, int>
+#define pb push_back
+#define mp make_pair
+#define fi first
+#define se second
+#define ui unsigned int
 using namespace std;
-const int N = 200006;
-int n, k, ans, pos, s[N], Ans;
-int Head[N], Edge[N<<1], Leng[N<<1], Next[N<<1], t = 0;
-bool v[N];
-int a[N], b[N], c[N], d[N], tot;
 
-void dfs_find(int S, int x) {
-	v[x] = 1;
-	s[x] = 1;
-	int max_part = 0;
-	for (int i = Head[x]; i; i = Next[i]) {
-		int y = Edge[i];
-		if (v[y]) continue;
-		dfs_find(S, y);
+const int N = 2e5 + 6, K = 1e6 + 6, inf = 1e9;
+int n, k, ans = inf, rt, sz, s[N], t[N], c[K], st[N], tp;
+vector< pii > e[N];
+bool v[N];
+
+void getrt(int x, int f) {
+    s[x] = 1;
+	t[x] = 0;
+	for (ui i = 0; i < e[x].size(); i++) {
+		int y = e[x][i].first;
+		if (v[y] || y == f) continue;
+		getrt(y, x);
 		s[x] += s[y];
-		max_part = max(max_part, s[y]);
+		t[x] = max(t[x], s[y]);
 	}
-	max_part = max(max_part, S - s[x]);
-	if (max_part < ans) {
-		ans = max_part;
-		pos = x;
+    t[x] = max(t[x], sz - s[x]);
+    if (t[rt] > t[x]) rt = x;
+}
+
+inline void add(int x, int o) {
+    st[++tp] = x;
+    c[x] = min(c[x], o);
+}
+
+void ask(int x, int f, int dis, int cnt) {
+    if (dis > k) return;
+    ans = min(ans, cnt + c[k-dis]);
+	for (ui i = 0; i < e[x].size(); i++) {
+		int y = e[x][i].fi, z = e[x][i].se;
+		if (v[y] || y == f) continue;
+		ask(y, x, dis + z, cnt + 1);
 	}
-	v[x] = 0;
+}
+
+void upd(int x, int f, int dis, int cnt) {
+    if (dis > k) return;
+    st[++tp] = dis;
+    c[dis] = min(c[dis], cnt);
+	for (ui i = 0; i < e[x].size(); i++) {
+		int y = e[x][i].fi, z = e[x][i].se;
+		if (v[y] || y == f) continue;
+		upd(y, x, dis + z, cnt + 1);
+	}
 }
 
 void dfs(int x) {
-	v[x] = 1;
-	for (int i = Head[x]; i; i = Next[i]) {
-		int y = Edge[i], z = Leng[i];
+    v[x] = 1;
+    st[++tp] = 0;
+    c[0] = min(c[0], 0);
+    for (ui i = 0; i < e[x].size(); i++) {
+		int y = e[x][i].fi, z = e[x][i].se;
 		if (v[y]) continue;
-		b[a[++tot]=y] = b[x];
-		c[y] = c[x] + 1;
-		d[y] = d[x] + z;
-		dfs(y);
+		ask(y, x, z, 1);
+		upd(y, x, z, 1);
 	}
-	v[x] = 0;
-}
-
-inline bool cmp(int i, int j) {
-	return d[i] < d[j] || (d[i] == d[j] && c[i] < c[j]);
-}
-
-void work(int S, int x) {
-	ans = S;
-	dfs_find(S, x);
-	d[x] = 0;
-	v[a[tot=1]=b[pos]=pos] = 1;
-	for (int i = Head[pos]; i; i = Next[i]) {
-		int y = Edge[i], z = Leng[i];
+    while (tp) c[st[tp--]] = inf;
+    for (ui i = 0; i < e[x].size(); i++) {
+		int y = e[x][i].fi;
 		if (v[y]) continue;
-		c[a[++tot]=b[y]=y] = 1;
-		d[y] = z;
-		dfs(y);
+		rt = 0;
+		sz = s[y];
+		getrt(y, 0);
+		dfs(rt);
 	}
-	sort(a + 1, a + tot + 1, cmp);
-	int l = 1, r = tot;
-	while (l < r) {
-		while (l < r && d[a[l]] + d[a[r]] > k) r--;
-		while (l < r && d[a[l]] + d[a[r]] == k) {
-			if (b[a[l]] != b[a[r]])
-				Ans = min(Ans, c[a[l]] + c[a[r]]);
-			r--;
-		}
-		l++;
-	}
-	int now = pos;
-	for (int i = Head[now]; i; i = Next[i]) {
-		int y = Edge[i];
-		if (v[y]) continue;
-		work(s[y], y);
-	}
-}
-
-inline void add(int x, int y, int z) {
-	Edge[++t] = y;
-	Leng[t] = z;
-	Next[t] = Head[x];
-	Head[x] = t;
 }
 
 int main() {
@@ -89,13 +79,14 @@ int main() {
 	for (int i = 1; i < n; i++) {
 		int x, y, z;
 		scanf("%d %d %d", &x, &y, &z);
-		add(++x, ++y, z);
-		add(y, x, z);
+		e[++x].pb(mp(++y, z));
+		e[y].pb(mp(x, z));
 	}
-	memset(v, 0, sizeof(v));
-	Ans = n;
-	work(n, 1);
-	if (Ans == n) puts("-1");
-	else cout << Ans << endl;
-	return 0;
+	for (int i = 0; i <= k; i++) c[i] = inf;
+    t[0] = inf;
+	sz = n;
+	getrt(1, 0);
+    dfs(rt);
+    cout << (ans == inf ? -1 : ans) << endl;
+    return 0;
 }
