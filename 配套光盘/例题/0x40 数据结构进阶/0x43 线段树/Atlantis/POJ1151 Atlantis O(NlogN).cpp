@@ -1,16 +1,19 @@
-//Author:XuHt
+//Author:xht37
 #include <map>
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
+#define ls (p << 1)
+#define rs (ls | 1)
+#define mid ((t[p].l + t[p].r) >> 1)
 using namespace std;
-const int N = 106;
-int n, m, num = 0;
+const int N = 1e5 + 6;
+int n, m, num;
 struct P {
 	double x, y, z;
 	int k;
-	bool operator < (const P w) const {
-		return x < w.x;
+	inline bool operator < (const P &o) const {
+		return x < o.x;
 	}
 } a[N<<1];
 double raw[N<<1];
@@ -21,34 +24,26 @@ struct T {
 } t[N<<3];
 
 void build(int p, int l, int r) {
-	t[p].l = l;
-	t[p].r = r;
-	t[p].cnt = 0;
-	t[p].len = 0;
+	t[p].l = l, t[p].r = r, t[p].cnt = 0, t[p].len = 0;
 	if (l == r) return;
-	int mid = (l + r) >> 1;
-	build(p << 1, l, mid);
-	build(p << 1 | 1, mid + 1, r);
+	build(ls, l, mid), build(rs, mid + 1, r);
 }
 
 void change(int p, int l, int r, double k) {
-	if (l <= t[p].l && r >= t[p].r) t[p].len = ((t[p].cnt += k) ? raw[t[p].r+1] - raw[t[p].l] : 0);
-	if (t[p].l == t[p].r) return;
-	int mid = (t[p].l + t[p].r) >> 1;
-	if (l <= mid) change(p << 1, l, r, k);
-	if (r > mid) change(p << 1 | 1, l, r, k);
-	t[p].len = (t[p].cnt ? raw[t[p].r+1] - raw[t[p].l] : t[p<<1].len + t[p<<1|1].len);
+	if (l <= t[p].l && r >= t[p].r) return t[p].len = ((t[p].cnt += k) ? raw[t[p].r+1] - raw[t[p].l] : (t[p].l == t[p].r ? 0 : t[ls].len + t[rs].len)), void();
+	if (l <= mid) change(ls, l, r, k);
+	if (r > mid) change(rs, l, r, k);
+	t[p].len = (t[p].cnt ? raw[t[p].r+1] - raw[t[p].l] : t[ls].len + t[rs].len);
 }
 
-void Atlantis() {
+inline void Atlantis() {
 	for (int i = 1; i <= n; i++) {
 		int k = i << 1;
 		double y, z;
 		scanf("%lf %lf %lf %lf", &a[k-1].x, &y, &a[k].x, &z);
 		raw[k-1] = a[k-1].y = a[k].y = y;
 		raw[k] = a[k-1].z = a[k].z = z;
-		a[k-1].k = 1;
-		a[k].k = -1;
+		a[k-1].k = 1, a[k].k = -1;
 	}
 	n <<= 1;
 	sort(raw + 1, raw + n + 1);
