@@ -1,0 +1,34 @@
+10 9
+Abland 56 
+Afland 2 
+Aeland 19 
+Ahland 53 
+Agland 97 
+Acland 90 Aeland
+Ailand 50 Agland
+Adland 4 
+Ajland 51 Ailand
+Aaland 65 Afland
+10 1
+Abland 33 
+Adland 23 
+Ahland 10 
+Agland 8 
+Ailand 6 
+Afland 52 Agland
+Ajland 62 Ahland
+Acland 25 
+Aaland 7 Acland
+Aeland 33 Ailand Afland Ajland
+10 0
+Adland 29 
+Ailand 32 
+Aaland 68 
+Aeland 3 Aaland
+Ahland 62 
+Agland 61 Ailand
+Abland 86 Adland
+Ajland 89 Ahland
+Acland 34 
+Afland 88 
+#
