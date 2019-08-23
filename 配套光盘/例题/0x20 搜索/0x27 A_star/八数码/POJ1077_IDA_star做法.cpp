@@ -40,7 +40,7 @@ int main() {
 	int cnt = 0;
 	for (register int i = 0; i < st.size(); ++i)
 		if (st[i] != '0')
-			for (register int j = 0; j < st.size(); ++j)
+			for (register int j = 0; j < i; ++j)
 				if (st[j] != '0') cnt += st[i] > st[j];
 	if (cnt & 1) {
 		puts("unsolvable");
