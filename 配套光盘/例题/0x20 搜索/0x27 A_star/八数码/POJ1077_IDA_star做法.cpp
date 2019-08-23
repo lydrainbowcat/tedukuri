@@ -1,5 +1,4 @@
-#pragma GCC optimize(3)
-#pragma GCC optimize("Ofast")
+//Author:WFZWF
 #include<string>
 #include<algorithm>
 #include<iostream>
