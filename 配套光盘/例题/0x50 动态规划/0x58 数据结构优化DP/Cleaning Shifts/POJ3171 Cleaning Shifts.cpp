@@ -1,15 +1,15 @@
-//Author:XuHt
+//Author:xht37
 #include <cstdio>
 #include <cstring>
 #include <iostream>
 #include <algorithm>
 using namespace std;
-const int N = 100006, INF = 0x3f3f3f3f;
+const int N = 1e5 + 7, inf = 0x3f3f3f3f;
 int n, l, r, f[N];
 struct T {
 	int l, r, x;
-	bool operator < (const T w) const {
-		return r < w.r;
+	inline bool operator < (const T w) const {
+		return r < w.r || (r == w.r && l < w.l);
 	}
 } a[N], t[N<<2];
 
@@ -39,7 +39,7 @@ void change(int p, int x, int y) {
 
 int ask(int p, int l, int r) {
 	if (l <= t[p].l && r >= t[p].r) return t[p].x;
-	int mid = (t[p].l + t[p].r) / 2, ans = INF;
+	int mid = (t[p].l + t[p].r) / 2, ans = inf;
 	if (l <= mid) ans = min(ans, ask(p << 1, l, r));
 	if (r > mid) ans = min(ans, ask(p << 1 | 1, l, r));
 	return ans;
@@ -48,19 +48,17 @@ int ask(int p, int l, int r) {
 int main() {
 	cin >> n >> l >> r;
 	for (int i = 1; i <= n; i++)
-		scanf("%d %d %d", &a[i].l, &a[i].r, &a[i].x);
+		scanf("%d %d %d", &a[i].l, &a[i].r, &a[i].x), a[i].l = max(l, a[i].l), a[i].r = min(r, a[i].r);
 	sort(a + 1, a + n + 1);
 	memset(f, 0x3f, sizeof(f));
-	f[l] = 0;
-	build(1, l, r);
+	f[l-1] = 0;
+	build(1, l - 1, r);
 	for (int i = 1; i <= n; i++) {
+		if (a[i].l > a[i].r) continue;
 		f[a[i].r] = min(f[a[i].r], ask(1, a[i].l - 1, a[i].r) + a[i].x);
 		change(1, a[i].r, f[a[i].r]);
-		if (a[i].r >= r) {
-			if (f[a[i].r] == INF) puts("-1");
-			else cout << f[a[i].r] << endl;
-			return 0;
-		}
 	}
+	if (f[r] == inf) puts("-1");
+	else cout << f[r] << endl;
 	return 0;
 }
