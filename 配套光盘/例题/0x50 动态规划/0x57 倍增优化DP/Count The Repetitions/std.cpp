@@ -32,7 +32,8 @@ void solve() {
 		for (int i = 0; i < s1.size(); i++)
 			f[i][j] = f[i][j - 1] + f[(i + f[i][j - 1]) % s1.size()][j - 1];
 	long long m = 0;
-	for (int st = 0; st < s1.size(); st++) {
+	int st = 0;
+	// for (int st = 0; st < s1.size(); st++) {
 		long long x = st, ans = 0;
 		for (int k = 30; k >= 0; k--) {
 			if (x + f[x%s1.size()][k] <= s1.size()*n1) {
@@ -41,7 +42,7 @@ void solve() {
 			}
 		}
 		m = max(m, ans);
-	}
+	// }
 	cout << m / n2 << endl;
 }
 
