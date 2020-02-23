@@ -3,7 +3,7 @@
 #include<cstring>
 #include<algorithm>
 using namespace std;
-int n, p, ans, history_match, pos[100010];
+int n, p, ans, history_match[100010], pos[100010];
 char s[100010], f[100010]; 
 int main() {
 	scanf("%s", s);
@@ -15,15 +15,17 @@ int main() {
 		else {
 			if (p && s[i] == f[p]) {
 				int cur_match = i - pos[p] + 1;
-				if (p == 1) {
-					ans = max(ans, history_match + cur_match);
-					history_match += cur_match; 
-				}
-				else
-					ans = max(ans, cur_match);
+				// 清空更深层的历史数据 
+				history_match[p] = 0;
 				p--;
+				// 更新当前层的历史数据，同层历史数据可以累加 
+				ans = max(ans, history_match[p] + cur_match);
+				history_match[p] += cur_match;
 			}
-			else history_match = p = 0;
+			else {
+				for (int j = 0; j <= p; j++) history_match[j] = 0;
+				p = 0;
+			}
 		}
 	}
 	cout << ans << endl;
