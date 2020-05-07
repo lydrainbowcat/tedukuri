@@ -29,6 +29,7 @@ void dfs(int x) {
 		int y = ver[i];
 		if (v[y]) continue;
 		if (deg[x] == 1) f[y] = d[y] + edge[i];
+		else if (deg[y] == 1) f[y] = d[y] + min(f[x] - edge[i], edge[i]);
 		else f[y] = d[y] + min(f[x] - min(d[y], edge[i]), edge[i]);
 		dfs(y);
 	}
