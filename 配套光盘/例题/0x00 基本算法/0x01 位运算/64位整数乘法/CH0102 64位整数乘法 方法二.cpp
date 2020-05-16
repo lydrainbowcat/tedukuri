@@ -9,9 +9,10 @@ typedef unsigned long long ull;
 ull mul(ull a, ull b, ull p) {
 	a %= p, b %= p;  // 当a,b一定在0~p之间时，此行不必要
 	ull c = (long double)a * b / p;
-	ull ans1 = a * b, ans2 = c * p;
-	if (ans1 < ans2) return ans2 - ans1;
-	return ans1 - ans2;
+	ull x = a * b, y = c * p;
+	long long ans = x % p - y % p;
+	if (ans < 0) ans += p;
+	return ans;
 }
 
 int main() {
