@@ -1,135 +1,88 @@
-#include<iostream>
-#include<cstdio>
-#include<cstring>
+#include <bits/stdc++.h>
 using namespace std;
-const int u=30000,w=200000;
-int head[u],ver[w],edge[w],next[w],tot;
-int dfn[u],low[u],st[u],ins[u],num,t;
-int e[u],go[u],h[u],c[u],scc;
-int d[u],f[u],v[u],du[u],q[u];
-int n,m,s,P,p,i,j,x,y,z,l,r;
+const int MAX_N = 25005, MAX_M = 150005;
+int head[MAX_N], ver[MAX_M], edge[MAX_M], mark[MAX_M], nxt[MAX_M], tot;
+int n, m, p, s, c[MAX_N], cnt, deg[MAX_N], d[MAX_N];
+bool v[MAX_N];
+queue<int> q; // 存的是块号
+vector<int> a[MAX_N]; // 每个“道路”连通块中的点
+priority_queue<pair<int, int>> heap;
 
-void add(int x,int y,int z)
-{
-	ver[++tot]=y; edge[tot]=z; next[tot]=head[x]; head[x]=tot;
+void add(int x, int y, int z, int k) { // k==0双向, k==1单向
+    ver[++tot] = y, edge[tot] = z, mark[tot] = k;
+    nxt[tot] = head[x], head[x] = tot;
 }
 
-inline void addscc(int x,int y)
-{
-	e[++scc]=y; go[scc]=h[x]; h[x]=scc; c[y]=x;
+void dfs(int x) {
+    c[x] = cnt;
+    a[cnt].push_back(x);
+    for (int i = head[x]; i; i = nxt[i]) {
+        if (mark[i] == 1) continue;
+        int y = ver[i];
+        if (!c[y]) dfs(y);
+    }
 }
 
-void tarjan(int x)
-{
-	v[x]=1;
-	dfn[x]=low[x]=++num;
-	st[++p]=x; ins[x]=1;
-	for(int i=head[x];i;i=next[i])
-		if(!v[ver[i]])
-		{
-			tarjan(ver[i]);
-			low[x]=min(low[x],low[ver[i]]);
-		}
-		else if(ins[ver[i]])
-			low[x]=min(low[x],dfn[ver[i]]);
-		if(dfn[x]==low[x])
-		{
-			++t; int y;
-			do{
-				y=st[p]; p--; ins[y]=0;
-				addscc(t,y);
-			}while(x!=y);
-		}
+void dijkstra(int k) { // 算k这一块的最短路
+    for (int j = 0; j < a[k].size(); j++) { // for (auto x : a[k]) {
+        int x = a[k][j]; // x是点号，k这块里面的所有点
+        heap.push(make_pair(-d[x], x));
+    }
+    while (!heap.empty()) {
+        int x = heap.top().second;
+        heap.pop();
+        if (v[x]) continue;
+        v[x] = 1;
+        for (int i = head[x]; i; i = nxt[i]) {
+            int y = ver[i];
+            if (mark[i] == 0) { // 正常的dijkstra模板
+                if (d[y] > d[x] + edge[i]) {
+                    d[y] = d[x] + edge[i];
+                    heap.push(make_pair(-d[y], y));
+                }
+            } else {
+                d[y] = min(d[y], d[x] + edge[i]);
+                if (--deg[c[y]] == 0) q.push(c[y]); // 拓扑排序的更新
+            }
+        }
+    }
 }
 
-void up(int x)
-{
-	while(x>1)
-		if(d[f[x]]<d[f[x>>1]])
-		{
-			swap(f[x],f[x>>1]);
-			swap(v[f[x]],v[f[x>>1]]);
-			x>>=1;
-		}
-		else break;
-}
-
-void down(int x,int y)
-{
-	int z=x*2;
-	while(z<=y)
-	{
-		if(z<y&&d[f[z]]>d[f[z+1]]) z++;
-		if(d[f[x]]>d[f[z]])
-		{
-			swap(f[x],f[z]);
-			swap(v[f[x]],v[f[z]]);
-			x=z; z=x*2;
-		}
-		else break;
-	}
-}
-
-void heapdijk(int s)
-{
-	p=0;
-	for(i=h[s];i;i=go[i])
-	{
-		f[++p]=e[i]; v[e[i]]=p;
-		up(p);
-	}
-	while(p)
-	{
-		x=f[1]; v[x]=0;
-		f[1]=f[p]; v[f[1]]=1; p--;
-		down(1,p);
-		for(i=head[x];i;i=next[i])
-			if(c[ver[i]]==s)
-			{
-				if(d[ver[i]]>d[x]+edge[i])
-				{
-					d[ver[i]]=d[x]+edge[i];
-					up(v[ver[i]]);
-				}
-			}
-			else{
-				d[ver[i]]=min(d[ver[i]],d[x]+edge[i]);
-				du[c[ver[i]]]--;
-				if(!du[c[ver[i]]]) q[++r]=c[ver[i]];
-			}
-	}
-}
-
-int main()
-{
-	cin>>n>>m>>P>>s;
-	for(i=1;i<=m;i++)
-	{
-		scanf("%d%d%d",&x,&y,&z);
-		add(x,y,z);
-		add(y,x,z);
-	}
-	for(i=1;i<=n;i++)
-		if(!v[i]) tarjan(i);
-	for(i=1;i<=P;i++)
-	{
-		scanf("%d%d%d",&x,&y,&z);
-		add(x,y,z);
-		du[c[y]]++;
-	}
-	memset(v,0,sizeof(v));
-	memset(d,0x3f,sizeof(d));
-	d[s]=0;
-	l=1; r=0; 
-	for(i=1;i<=t;i++)
-		if(!du[i]) {q[++r]=i;}
-	while(l<=r)
-	{
-		heapdijk(q[l]);
-		l++;
-	}
-	for(i=1;i<=n;i++)
-		if(d[i]>100000000) printf("NO PATH\n");
-		else printf("%d\n",d[i]); 
-	return 0;
+int main() {
+    cin >> n >> m >> p >> s;
+    for (int i = 1; i <= m; i++) {
+        int x, y, z;
+        scanf("%d%d%d", &x, &y, &z);
+        add(x, y, z, 0);
+        add(y, x, z, 0);
+    }
+    for (int i = 1; i <= p; i++) {
+        int x, y, z;
+        scanf("%d%d%d", &x, &y, &z);
+        add(x, y, z, 1);
+    }
+    for (int i = 1; i <= n; i++)
+        if (c[i] == 0) {
+            cnt++;
+            dfs(i);
+        }
+    // 统计每块的总入度，只看航线
+    for (int x = 1; x <= n; x++)
+        for (int i = head[x]; i; i = nxt[i]) {
+            if (mark[i] == 0) continue;
+            // 这是一条从块c[x]到块c[ver[i]]的航线
+            deg[c[ver[i]]]++;
+        }
+    // 对块拓扑排序
+    for (int i = 1; i <= cnt; i++)
+        if (!deg[i]) q.push(i);
+    memset(d, 0x3f, sizeof(d));
+    d[s] = 0;
+    while (!q.empty()) {
+        int k = q.front(); // k是块号
+        q.pop();
+        dijkstra(k);
+    }
+    for (int i = 1; i <= n; i++)
+        if (d[i] > n * 10000) puts("NO PATH"); else printf("%d\n", d[i]);
 }

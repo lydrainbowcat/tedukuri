@@ -1,69 +1,52 @@
-//Author:xht37
-#include <queue>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <algorithm>
+#include<bits/stdc++.h>
 using namespace std;
-const int N = 1e5 + 6, M = 1e6 + 6;
-int n, m, tot, Price[N], Ans;
-int Head[N], Side[M], Next[M], ans[N];
-int fHead[N], fSide[M], fNext[M], fans[N];
-priority_queue<pair<int, int> > q;
-priority_queue<pair<int, int> > fq;
+const int MAX_N = 100005, MAX_M = 1000005;
+int head[MAX_N], ver[MAX_M], edge[MAX_M], nxt[MAX_M], tot;
+int n, m, a[MAX_N], d[MAX_N]/*前缀min*/, f[MAX_N]/*后缀max*/;
+bool v[MAX_N]; // 点是否在队列中
+queue<int> q;
+
+void add(int x, int y, int z) {
+    tot++;
+    ver[tot] = y;
+    edge[tot] = z; // 1表示只能正着走，-1表示只能倒着走，2表示正反都可以
+    nxt[tot] = head[x];
+    head[x] = tot;
+}
+
+// 求d数组，从st出发，只有标记为z和2的边可以用
+void spfa(int* d, int st, int z) {
+    d[st] = a[st];
+    q.push(st); v[st] = true;
+    while (!q.empty()) {
+        int x = q.front();
+        q.pop(); v[x] = false;
+        for (int i = head[x]; i; i = nxt[i])
+            if (edge[i] == z || edge[i] == 2) {
+                int y = ver[i];
+                int val = z == 1 ? min(d[x], a[y]) : max(d[x], a[y]);
+                if (z == 1 && d[y] > val || z == -1 && d[y] < val) {
+                    d[y] = val;
+                    if (!v[y]) { q.push(y); v[y] = true; }
+                }
+            }
+    }
+}
 
 int main() {
-	cin >> n >> m;
-	for (int i = 1; i <= n; i++) scanf("%d", &Price[i]);
-	for (int i = 1; i <= m; i++) {
-		int x, y, z;
-		scanf("%d %d %d", &x, &y, &z);
-		Side[++tot] = y;
-		Next[tot] = Head[x];
-		Head[x] = tot;
-		fSide[tot] = x;
-		fNext[tot] = fHead[y];
-		fHead[y] = tot;
-		if (z == 2) {
-			Side[++tot] = x;
-			Next[tot] = Head[y];
-			Head[y] = tot;
-			fSide[tot] = y;
-			fNext[tot] = fHead[x];
-			fHead[x] = tot;
-		}
-	}
-	memset(ans, 0x3f, sizeof(ans));
-	memset(fans, 0xcf, sizeof(fans));
-	ans[1] = Price[1];
-	fans[n] = Price[n];
-	q.push(make_pair(-ans[1], 1));
-	fq.push(make_pair(fans[n], n));
-	while (q.size()) {
-		int x = q.top().second;
-		q.pop();
-		for (int i = Head[x]; i; i = Next[i]) {
-			int y = Side[i];
-			if (ans[y] > ans[x]) {
-				ans[y] = ans[x];
-				ans[y] = min(ans[y], Price[y]);
-				q.push(make_pair(-ans[y], y));
-			}
-		}
-	}
-	while (fq.size()) {
-		int x = fq.top().second;
-		fq.pop();
-		for (int i = fHead[x]; i; i = fNext[i]) {
-			int y = fSide[i];
-			if (fans[y] < fans[x]) {
-				fans[y] = fans[x];
-				fans[y] = max(fans[y], Price[y]);
-				fq.push(make_pair(fans[y], y));
-			}
-		}
-	}
-	for (int i = 1; i <= n; i++) Ans = max(Ans, fans[i]-ans[i]);
-	cout << Ans << endl;
-	return 0;
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++) scanf("%d", &a[i]);
+    for (int i = 1; i <= m; i++) {
+        int x, y, z;
+        scanf("%d%d%d", &x, &y, &z);
+        add(x, y, z);
+        add(y, x, z == 1 ? -1 : z);
+    }
+    memset(d, 0x3f, sizeof(d));
+    spfa(d, 1, 1); // 从1出发求前缀min（d），只有1和2的边可以用
+    memset(f, 0xcf, sizeof(f));
+    spfa(f, n, -1); // 从n出发倒着求后缀max（d），只有-1和2的边可以用
+    int ans = 0;
+    for (int i = 1; i <= n; i++) ans = max(ans, f[i] - d[i]);
+    cout << ans << endl;
 }

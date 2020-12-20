@@ -1,96 +1,127 @@
-//Author:XuHt
-#include <map>
-#include <cstdio>
-#include <string>
-#include <vector>
-#include <cstring>
-#include <iostream>
-#include <algorithm>
+#include<bits/stdc++.h>
 using namespace std;
-const int N = 37, INF = 0x3f3f3f3f;
-struct E {
-	int x, y, z;
-	bool operator < (const E w) const {
-		return z < w.z;
-	}
-} f[N];
-int n, k, tot, ans, a[N][N], fa[N], d[N], v[N];
-map<string, int> m;
-vector<E> e;
-bool b[N][N];
+int n, m, s, deg, ans;
+int a[32][32], d[32], conn[32];
+bool v[32], c[32];
+int tree[32][32];
+int ver[32], p;
+int f[32], fx[32], fy[32]; // (fx[i], fy[i])就是1~i路径上的最大边，边权是f[i]
 
-int get(int x) {
-	if (x == fa[x]) return x;
-	return fa[x] = get(fa[x]);
+void read() {
+    map<string, int> h;
+    cin >> m;
+    h["Park"] = 1; n = 1;
+    memset(a, 0x3f, sizeof(a)); // 原图对应的邻接矩阵
+    for (int i = 1; i <= m; i++) {
+        int x, y, z;
+        char sx[12], sy[12];
+        scanf("%s%s%d", sx, sy, &z);
+        if (!h[sx]) h[sx] = ++n;
+        if (!h[sy]) h[sy] = ++n;
+        x = h[sx], y = h[sy];
+        a[x][y] = min(a[x][y], z);
+        a[y][x] = min(a[y][x], z);
+    }
+    cin >> s;
 }
 
-void dfs(int x, int o) {
-	for (int i = 2; i <= tot; i++) {
-		if (i == o || !b[x][i]) continue;
-		if (f[i].z == -1) {
-			if (f[x].z > a[x][i]) f[i] = f[x];
-			else {
-				f[i].x = x;
-				f[i].y = i;
-				f[i].z = a[x][i];
-			}
-		}
-		dfs(i, x);
-	}
+void prim(int root) { // 对ver中的p个点求最小生成树
+    d[root] = 0;
+    for (int i = 1; i <= p; i++) {
+        int x = 0;
+        for (int j = 1; j <= p; j++)
+            if (!v[ver[j]] && (x == 0 || d[ver[j]] < d[x])) x = ver[j];
+        v[x] = true; // 进入已选集合
+        for (int j = 1; j <= p; j++) {
+            int y = ver[j];
+            if (!v[y] && d[y] > a[x][y])
+                d[y] = a[x][y], conn[y] = x;
+        }
+    }
+    // 连通块内部的最小生成树，连边
+    int closest = root;
+    for (int i = 1; i <= p; i++) {
+        int x = ver[i];
+        if (root == x) continue;
+        ans += d[x];
+        tree[conn[x]][x] = tree[x][conn[x]] = d[x];
+        if (a[1][x] < a[1][closest]) closest = x;
+    }
+    // 每个连通块跟1号点连1条边
+    deg++;
+    ans += a[1][closest];
+    tree[1][closest] = tree[closest][1] = a[1][closest];
+}
+
+void dfs(int x) { // 找连通块
+    ver[++p] = x;
+    c[x] = true;
+    for (int y = 1; y <= n; y++)
+        if (a[x][y] != 0x3f3f3f3f && !c[y]) dfs(y);
+}
+
+void prim_for_all_comp() {
+    memset(d, 0x3f, sizeof(d));
+    memset(v, 0, sizeof(v));
+    memset(tree, 0x3f, sizeof(tree)); // 最小生成树对应的邻接矩阵
+    c[1] = true;
+    for (int i = 2; i <= n; i++)
+        if (!c[i]) {
+            p = 0;
+            dfs(i);
+            // ver中保存了连通块里面的点
+            prim(i);
+        }
+}
+
+void dp(int x) {
+    v[x] = true;
+    for (int y = 2; y <= n; y++)
+        if (tree[x][y] != 0x3f3f3f3f && !v[y]) {
+            if (f[x] > tree[x][y]) {
+                f[y] = f[x];
+                fx[y] = fx[x], fy[y] = fy[x];
+            } else {
+                f[y] = tree[x][y];
+                fx[y] = x, fy[y] = y;
+            }
+            dp(y);
+        }
+    v[x] = false;
+}
+
+bool solve() {
+    int min_val = 1 << 30, mini;
+    for (int i = 2; i <= n; i++) { // 枚举从1出发的非树边(1, i)，看加哪一条
+        if (tree[1][i] != 0x3f3f3f3f || a[1][i] == 0x3f3f3f3f) continue;
+        // 加入非树边(1, i)，删去树边(fx[i], fy[i])
+        if (a[1][i] - tree[fx[i]][fy[i]] < min_val) {
+            min_val = a[1][i] - tree[fx[i]][fy[i]];
+            mini = i;
+        }
+    }
+    if (min_val >= 0) return false;
+    ans += min_val;
+    tree[1][mini] = tree[mini][1] = a[1][mini];
+    tree[fx[mini]][fy[mini]] = tree[fy[mini]][fx[mini]] = 0x3f3f3f3f;
+    // 重新计算以mini为根的子树的dp状态
+    f[mini] = a[1][mini];
+    fx[mini] = 1, fy[mini] = mini;
+    v[1] = true;
+    dp(mini);
+    return true;
 }
 
 int main() {
-	cin >> n;
-	memset(a, 0x3f, sizeof(a));
-	memset(d, 0x3f, sizeof(d));
-	m["Park"] = tot = 1;
-	for (int i = 0; i < N; i++) fa[i] = i;
-	for (int i = 1; i <= n; i++) {
-		E w;
-		string s1, s2;
-		cin >> s1 >> s2 >> w.z;
-		w.x = m[s1] ? m[s1] : (m[s1] = ++tot);
-		w.y = m[s2] ? m[s2] : (m[s2] = ++tot);
-		e.push_back(w);
-		a[w.x][w.y] = a[w.y][w.x] = min(a[w.x][w.y], w.z);
-	}
-	cin >> k;
-	sort(e.begin(), e.end());
-	for (unsigned int i = 0; i < e.size(); i++) {
-		if (e[i].x == 1 || e[i].y == 1) continue;
-		int rtx = get(e[i].x), rty = get(e[i].y);
-		if (rtx != rty) {
-			fa[rtx] = rty;
-			b[e[i].x][e[i].y] = b[e[i].y][e[i].x] = 1;
-			ans += e[i].z;
-		}
-	}
-	for (int i = 2; i <= tot; i++)
-		if (a[1][i] != INF) {
-			int rt = get(i);
-			if (d[rt] > a[1][i]) d[rt] = a[1][v[rt]=i];
-		}
-	for (int i = 1; i <= tot; i++)
-		if (d[i] != INF) {
-			--k;
-			b[1][v[i]] = b[v[i]][1] = 1;
-			ans += a[1][v[i]];
-		}
-	while (k--) {
-		memset(f, -1, sizeof(f));
-		f[1].z = -INF;
-		for (int i = 2; i <= tot; i++)
-			if (b[1][i]) f[i].z = -INF;
-		dfs(1, -1);
-		int o, w = -INF;
-		for (int i = 2; i <= tot; i++)
-			if (w < f[i].z - a[1][i])
-				w = f[i].z - a[1][o=i];
-		if (w <= 0) break;
-		b[1][o] = b[o][1] = 1;
-		b[f[o].x][f[o].y] = b[f[o].y][f[o].x] = 0;
-		ans -= w;
-	}
-	printf("Total miles driven: %d\n", ans);
-	return 0;
+    read();
+    // 删掉1号点，找出每个连通块，各自求Prim
+    prim_for_all_comp();
+    memset(v, 0, sizeof(v));
+    dp(1);
+    while (deg < s) {
+        if (!solve()) break;
+        deg++;
+    }
+    printf("Total miles driven: ");
+    cout << ans << endl;
 }
