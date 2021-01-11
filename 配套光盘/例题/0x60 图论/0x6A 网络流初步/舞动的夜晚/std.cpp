@@ -6,7 +6,7 @@
 #include<queue>
 using namespace std;
 const int inf = 0x3fffffff, u = 40010, w = 300010;
-int head[u], ver[w], edge[w], Next[w], d[u], e[w], c[u], sta[u], ins[u], dfn[u], low[u];
+int head[u], now[u], ver[w], edge[w], Next[w], d[u], e[w], c[u], sta[u], ins[u], dfn[u], low[u];
 int n, m, p, s, t, i, j, tot, maxflow, ans, x, y, scc, st, num;
 char str[10];
 vector<int> a[u];
@@ -17,15 +17,16 @@ void add(int x, int y, int z) {
 	ver[++tot] = x, edge[tot] = 0, Next[tot] = head[y], head[y] = tot;
 }
 
-bool bfs() {
+bool bfs() { // 在残量网络上构造分层图
 	memset(d, 0, sizeof(d));
 	while (q.size()) q.pop();
-	q.push(s); d[s] = 1;
+	q.push(s); d[s] = 1; now[s] = head[s];
 	while (q.size()) {
 		int x = q.front(); q.pop();
 		for (int i = head[x]; i; i = Next[i])
 			if (edge[i] && !d[ver[i]]) {
 				q.push(ver[i]);
+				now[ver[i]] = head[ver[i]];
 				d[ver[i]] = d[x] + 1;
 				if (ver[i] == t) return 1;
 			}
@@ -33,17 +34,19 @@ bool bfs() {
 	return 0;
 }
 
-int dinic(int x, int flow) {
+int dinic(int x, int flow) { // 在当前分层图上增广
 	if (x == t) return flow;
-	int rest = flow, k;
-	for (int i = head[x]; i && rest; i = Next[i])
+	int rest = flow, k, i;
+	for (i = now[x]; i && rest; i = Next[i]) {
+		now[x] = i; // 当前弧优化（避免重复遍历从x出发不可扩展的边）
 		if (edge[i] && d[ver[i]] == d[x] + 1) {
 			k = dinic(ver[i], min(rest, edge[i]));
-			if (!k) d[ver[i]] = 0;
+			if (!k) d[ver[i]] = 0; // 剪枝，去掉增广完毕的点
 			edge[i] -= k;
 			edge[i ^ 1] += k;
 			rest -= k;
 		}
+	}
 	return flow - rest;
 }
 

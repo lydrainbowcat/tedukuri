@@ -71,24 +71,24 @@ int main() {
 #include<queue>
 using namespace std;
 const int inf = 1 << 29, N = 50010, M = 300010;
-int head[N], ver[M], edge[M], Next[M], d[N];
+int head[N], ver[M], edge[M], Next[M], d[N], /*当前弧优化*/now[M];
 int n, m, s, t, tot, maxflow;
 queue<int> q;
-
 void add(int x, int y, int z) {
-	ver[++tot] = y, edge[tot] = z, Next[tot] = head[x], head[x] = tot;
-	ver[++tot] = x, edge[tot] = 0, Next[tot] = head[y], head[y] = tot;
+	ver[++tot]=y, edge[tot]=z, Next[tot]=head[x], head[x]=tot;
+	ver[++tot]=x, edge[tot]=0, Next[tot]=head[y], head[y]=tot;
 }
 
 bool bfs() { // 在残量网络上构造分层图
 	memset(d, 0, sizeof(d));
 	while (q.size()) q.pop();
-	q.push(s); d[s] = 1;
+	q.push(s); d[s] = 1; now[s] = head[s];
 	while (q.size()) {
 		int x = q.front(); q.pop();
 		for (int i = head[x]; i; i = Next[i])
 			if (edge[i] && !d[ver[i]]) {
 				q.push(ver[i]);
+				now[ver[i]] = head[ver[i]];
 				d[ver[i]] = d[x] + 1;
 				if (ver[i] == t) return 1;
 			}
@@ -98,8 +98,9 @@ bool bfs() { // 在残量网络上构造分层图
 
 int dinic(int x, int flow) { // 在当前分层图上增广
 	if (x == t) return flow;
-	int rest = flow, k;
-	for (int i = head[x]; i && rest; i = Next[i])
+	int rest = flow, k, i;
+	for (i = now[x]; i && rest; i = Next[i]) {
+		now[x] = i; // 当前弧优化（避免重复遍历从x出发不可扩展的边）
 		if (edge[i] && d[ver[i]] == d[x] + 1) {
 			k = dinic(ver[i], min(rest, edge[i]));
 			if (!k) d[ver[i]] = 0; // 剪枝，去掉增广完毕的点
@@ -107,6 +108,7 @@ int dinic(int x, int flow) { // 在当前分层图上增广
 			edge[i ^ 1] += k;
 			rest -= k;
 		}
+	}
 	return flow - rest;
 }
 
@@ -115,8 +117,7 @@ int main() {
 	cin >> s >> t; // 源点、汇点
 	tot = 1;
 	for (int i = 1; i <= m; i++) {
-		int x, y, c;
-		scanf("%d%d%d", &x, &y, &c);
+		int x, y, c; scanf("%d%d%d", &x, &y, &c);
 		add(x, y, c);
 	}
 	int flow = 0;
@@ -124,7 +125,6 @@ int main() {
 		while (flow = dinic(s, inf)) maxflow += flow;
 	cout << maxflow << endl;
 }
-
 
 // 费用流，例题：K取方格数 (POJ3422)
 #include<iostream>
