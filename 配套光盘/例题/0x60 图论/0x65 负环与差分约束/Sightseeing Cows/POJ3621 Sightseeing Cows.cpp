@@ -1,70 +1,59 @@
-//Author:XuHt
-#include <queue>
-#include <cstdio>
-#include <cstring>
-#include <iostream>
+#include<bits/stdc++.h>
 using namespace std;
-const int N = 1006, M = 5006;
-const double eps = 1e-6;
-int n, m, c[N], f[N], x[M], y[M], z[M];
-int Head[N], Edge[M], Next[M], tot;
-double Leng[M], d[N];
-bool v[N];
+const int MAX_N = 1005, MAX_M = 5005;
+int fun[MAX_N];
+struct {int x, y, time;} a[MAX_M];
+int head[MAX_N], ver[MAX_M], nxt[MAX_M], cnt[MAX_N], tot;
+double edge[MAX_M], d[MAX_N];
+int n, m;
+bool v[MAX_N]; // 点是否在队列中
+queue<int> q;
 
+// 插入一条从x到y长度z的有向边
 void add(int x, int y, double z) {
-	Edge[++tot] = y;
-	Leng[tot] = z;
-	Next[tot] = Head[x];
-	Head[x] = tot;
+    tot++;
+    ver[tot] = y;
+    edge[tot] = z;
+    nxt[tot] = head[x]; // 在head[x]这条链的开头插入新点
+    head[x] = tot;
 }
 
-bool spfa() {
-	queue<int> q;
-	for (int i = 1; i <= n; i++) {
-		q.push(i);
-		d[i] = 0;
-		v[i] = 1;
-	}
-	memset(c, 0, sizeof(c));
-	while (q.size()) {
-		int x = q.front();
-		q.pop();
-		v[x] = 0;
-		for (int i = Head[x]; i; i = Next[i]) {
-			int y = Edge[i];
-			if (d[y] > d[x] + Leng[i]) {
-				d[y] = d[x] + Leng[i];
-				if (++c[y] > n) return 1;
-				if (!v[y]) {
-					q.push(y);
-					v[y] = 1;
-				}
-			}
-		}
-	}
-	return 0;
-}
-
-bool pd(double w) {
-	tot = 0;
-	memset(Head, 0, sizeof(Head));
-	for (int i = 1; i <= m; i++)
-		add(x[i], y[i], w * z[i] - f[x[i]]);
-	return spfa();
+// 判断有没有负环
+bool spfa_neg_cycle() {
+    while (!q.empty()) q.pop();
+    for (int i = 1; i <= n; i++) {
+        d[i] = 0; cnt[i] = 0;
+        q.push(i);
+        v[i] = true;
+    }
+    while (!q.empty()) {
+        int x = q.front();
+        q.pop(); v[x] = false;
+        for (int i = head[x]; i; i = nxt[i]) {
+            int y = ver[i];
+            double z = edge[i];
+            if (d[y] > d[x] + z) {
+                d[y] = d[x] + z;
+                cnt[y] = cnt[x] + 1;
+                if (cnt[y] >= n) return true;
+                if (!v[y]) { q.push(y); v[y] = true; }
+            }
+        }
+    }
+    return false;
 }
 
 int main() {
-	cin >> n >> m;
-	for (int i = 1; i <= n; i++)
-		scanf("%d", &f[i]);
-	for (int i = 1; i <= m; i++)
-		scanf("%d %d %d", &x[i], &y[i], &z[i]);
-	double l = 0, r = 1000;
-	while (r - l > eps) {
-		double mid = (l + r) / 2;
-		if (pd(mid)) l = mid;
-		else r = mid;
-	}
-	printf("%.2f", l);
-	return 0;
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++) scanf("%d", &fun[i]);
+    for (int i = 1; i <= m; i++) scanf("%d%d%d", &a[i].x, &a[i].y, &a[i].time);
+    double l = 0, r = 1e6;
+    while (r - l > 1e-4) {
+        double mid = (l + r) / 2;
+        memset(head, 0, sizeof(head));
+        tot = 0;
+        for (int i = 1; i <= m; i++) add(a[i].x, a[i].y, mid * a[i].time - fun[a[i].x]);
+        if (spfa_neg_cycle()) l = mid; else r = mid;
+    }
+    printf("%.2f\n", r);
 }
