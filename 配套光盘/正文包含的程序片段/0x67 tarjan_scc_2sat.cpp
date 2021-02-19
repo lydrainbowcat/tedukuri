@@ -219,12 +219,11 @@ int main() {
 		if (!dfn[i]) tarjan(i);
 	for (int i = 1; i <= n; i++) 	{
 		if (c[i] == c[n + i]) { puts("NO"); return 0; }
-		opp[i] = n + i, opp[n + i] = i;
 	}
     puts("YES");
     // 构造方案 
-    for (int i = 1; i <= 2 * n; i++)
-    	val[i] = c[i] > c[opp[i]];
+    for (int i = 1; i <= n; i++)
+    	val[i] = c[i] > c[n + i];
     // 输出最终结果
 	for (int i = 1; i <= n; i++)
 		if (val[i] == 0) printf("%02d:%02d %02d:%02d\n",

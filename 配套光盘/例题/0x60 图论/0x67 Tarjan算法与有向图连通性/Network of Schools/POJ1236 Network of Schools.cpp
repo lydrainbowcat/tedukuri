@@ -1,64 +1,60 @@
-//Author:XuHt
-#include <cstdio>
-#include <vector>
-#include <cstring>
-#include <iostream>
-#include <algorithm>
+#include<bits/stdc++.h>
 using namespace std;
-const int N = 106;
-int n, dfn[N], low[N], num = 0;
-int st[N], top = 0, tot = 0, c[N], ru[N], chu[N];
-bool v[N];
-vector<int> e[N], scc[N], sc[N];
+const int N = 105, M = 10005;
+int head[N], ver[M], nxt[M], tot;
+int dfn[N], low[N], c[N], s[N], n, num, top, cnt;
+int in[N], out[N];
+bool ins[N];
+
+void add(int x, int y) {
+    ver[++tot] = y, nxt[tot] = head[x], head[x] = tot;
+}
 
 void tarjan(int x) {
-    dfn[x] = low[x] = ++num;
-    st[++top] = x;
-    v[x] = 1;
-    for (unsigned int i = 0; i < e[x].size(); i++) {
-        int y = e[x][i];
+    low[x] = dfn[x] = ++num;
+    s[++top] = x; ins[x] = true;
+    for (int i = head[x]; i; i = nxt[i]) {
+        int y = ver[i];
         if (!dfn[y]) {
             tarjan(y);
             low[x] = min(low[x], low[y]);
-        } else if (v[y]) low[x] = min(low[x], dfn[y]);
+        }
+        else if (ins[y])
+            low[x] = min(low[x], dfn[y]);
     }
     if (dfn[x] == low[x]) {
-        v[x] = 0;
-        scc[++tot].push_back(x);
-        c[x] = tot;
+        cnt++; // 找到了一个SCC
         int y;
-        while (x != (y = st[top--])) {
-            scc[tot].push_back(y);
-            v[y] = 0;
-            c[y] = tot;
-        }
+        do {
+            y = s[top--];
+            ins[y] = false;
+            c[y] = cnt;
+            // scc[cnt].push_back(y);
+        } while (x != y);
     }
 }
 
 int main() {
     cin >> n;
     for (int i = 1; i <= n; i++) {
-		int x;
-        while (scanf("%d", &x) && x) e[i].push_back(x);
-	}
+        int j;
+        while (scanf("%d", &j), j) add(i, j);
+    }
     for (int i = 1; i <= n; i++)
         if (!dfn[i]) tarjan(i);
     for (int x = 1; x <= n; x++)
-        for (unsigned int i = 0; i < e[x].size(); i++) {
-            int y = e[x][i];
+        for (int i = head[x]; i; i = nxt[i]) {
+            int y = ver[i];
             if (c[x] == c[y]) continue;
-            sc[c[x]].push_back(c[y]);
-            ru[c[y]]++;
-            chu[c[x]]++;
+            // 缩点后从c[x]到c[y]的有向边
+            in[c[y]]++, out[c[x]]++;
         }
-    int ansa = 0, ansb = 0;
-    for (int i = 1; i <= tot; i++) {
-        if (!ru[i]) ansa++;
-        if (!chu[i]) ansb++;
+    int zero_in = 0;
+    int zero_out = 0;
+    for (int i = 1; i <= cnt; i++) {
+        if (!in[i]) zero_in++;
+        if (!out[i]) zero_out++;
     }
-    cout << ansa << endl;
-    int ans = max(ansa, ansb);
-    if (tot == 1) puts("0");
-    else cout << ans << endl;
-    return 0;
+    cout << zero_in << endl;
+    cout << (cnt == 1 ? 0 : max(zero_in, zero_out)) << endl;
 }
