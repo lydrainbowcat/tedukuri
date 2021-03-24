@@ -237,4 +237,3 @@ int main() {
 	for (int i = 1; i <= nl; i++) printf("%d ", boy[i]);
 	puts("");
 }
-

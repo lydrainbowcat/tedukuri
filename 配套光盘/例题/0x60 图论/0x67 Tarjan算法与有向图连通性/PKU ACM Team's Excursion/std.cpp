@@ -1,93 +1,120 @@
-#include <iostream>
-#include <cstdio>
-#include <cstring>
-#include <algorithm>
-#include <queue> 
+#include<bits/stdc++.h>
 using namespace std;
-const int mod = 1000000007;
-int n, m, s, t, Q;
-int ver[2 * 200005], edge[2 * 200005], nxt[2 * 200005], head[100005], tot;
-int in[100005], out[100005], fs[100005], ft[100005], d[100005], pre[100005];
-bool bridge[2 * 200005];
-int a[100005], sum[100005], danger[100005], dps[100005], dpt[100005];
+const int N = 100005, M = 200005, mod = 1000000007;
+int ver[M*2], edge[M*2], nxt[M*2], head[N], tot;
+int f[2][N], deg[2][N], d[N], pre[N], n, m, s, t, bus;
+bool bridge[M*2];
+int a[N], b[N], cnt; // 长度、是不是桥
+int sum[N], sum_bri[N], ds[N], dt[N], ds_min[N];
+int occur[N], first_occur[N];
 queue<int> q;
 
 void add(int x, int y, int z) {
-	ver[++tot] = y, edge[tot] = z, nxt[tot] = head[x], head[x] = tot;
+    ver[++tot] = y, edge[tot] = z, nxt[tot] = head[x], head[x] = tot;
 }
 
-void topsort(int s, int in[100005], int rev, int f[100005]) {
-	f[s] = 1;
-	for (int i = 1; i <= n; i++)
-		if (in[i] == 0) q.push(i);
-	while (q.size()) {
-		int x = q.front(); q.pop();
-		for (int i = head[x]; i; i = nxt[i]) {
-			if ((i & 1) != rev) continue;
-			int y = ver[i];
-			f[y] = (f[y] + f[x]) % mod;
-			if (--in[y] == 0) q.push(y);
-			if (rev == 0 && d[y] > d[x] + edge[i]) {
-				d[y] = d[x] + edge[i];
-				pre[y] = i;
-			}
-		}
-	}
+void topsort(int s, int bit) {
+    if (bit == 0) { // 只有正图需要求最短路
+        memset(d, 0x3f, sizeof(d));
+        d[s] = 0;
+    }
+    f[bit][s] = 1;
+    for (int i = 1; i <= n; i++)
+        if (deg[bit][i] == 0) q.push(i);
+    while (!q.empty()) {
+        int x = q.front(); q.pop();
+        for (int i = head[x]; i; i = nxt[i])
+            if ((i & 1) == bit) {
+                int y = ver[i];
+                f[bit][y] = (f[bit][y] + f[bit][x]) % mod; // 路径条数
+                if (bit == 0 && d[y] > d[x] + edge[i]) {  // 最短路
+                    d[y] = d[x] + edge[i];
+                    pre[y] = i;
+                }
+                if (--deg[bit][y] == 0) q.push(y);
+            }
+    }
 }
 
 int main() {
-	int T; cin >> T;
-	while (T--) {
-		cin >> n >> m >> s >> t >> Q;
-		s++, t++;
-		memset(head, 0, sizeof(head));
-		memset(in, 0, sizeof(in));
-		memset(out, 0, sizeof(out));
-		memset(fs, 0, sizeof(fs));
-		memset(ft, 0, sizeof(ft));
-		memset(bridge, 0, sizeof(bridge));
-		memset(d, 0x3f, sizeof(d));
-		tot = 1; d[s] = 0;
-		for (int i = 1; i <= m; i++) {
-			int x, y, z;
-			scanf("%d%d%d", &x, &y, &z);
-			x++, y++;
-			add(x, y, z), in[y]++; // 下标为2,4,6,...的为正向图
-			add(y, x, z), out[x]++; // 下标为3,5,7,...的为反图
-		}
-		// 在正向图上拓扑排序求s到每个点的路径条数，同时求出最短路
-		topsort(s, in, 0, fs);
-		if (fs[t] == 0) { puts("-1"); continue; }
-		// 在反向图上拓扑排序求每个点到t的路径条数
-		topsort(t, out, 1, ft);
-		// 求出桥边
-		for (int i = 2; i <= tot; i += 2) {
-			int x = ver[i ^ 1], y = ver[i];
-			if ((long long)fs[x] * ft[y] % mod == fs[t]) bridge[i] = 1;
-		}
-		int p = 0;
-		for (int x = t; x != s; x = ver[pre[x] ^ 1]) {
-			a[++p] = pre[x];
-			sum[p] = sum[p - 1] + edge[a[p]];
-			danger[p] = danger[p - 1] + (bridge[a[p]] ? edge[a[p]] : 0);
-		}
-		dps[0] = dpt[p + 1] = 0;
-		for (int i = 1, j = 0; i <= p; i++) {
-			while (sum[i] - sum[j] > Q) j++;
-			// 前i-1段搭1次车，第i段步行，或者前j段步行，第j+1~i段搭车
-			int z = bridge[a[i]] ? edge[a[i]] : 0;
-			int side = j > 0 && bridge[a[j]] ? Q - (sum[i] - sum[j]) : 0;
-			dps[i] = min(dps[i - 1] + z, danger[j] - side);
-		}
-		for (int i = p, j = p; i; i--) {
-			while (sum[j] - sum[i - 1] > Q) j--;
-			// 第i+1~p段搭1次车，第i段步行，或者第j+1~p段步行，第i~j段搭车
-			int z = bridge[a[i]] ? edge[a[i]] : 0;
-			int side = j < p && bridge[a[j + 1]] ? Q - (sum[j] - sum[i - 1]) : 0;
-			dpt[i] = min(dpt[i + 1] + z, danger[p] - danger[j] - side);
-		}
-		int ans = 1 << 30;
-		for (int i = 1; i <= p; i++) ans = min(ans, dps[i - 1] + dpt[i]);
-		cout << ans << endl;
-	}
+    int C; cin >> C;
+    while (C--) {
+        memset(head, 0, sizeof(head));
+        memset(deg, 0, sizeof(deg));
+        memset(f, 0, sizeof(f));
+        memset(bridge, 0, sizeof(bridge));
+        memset(occur, 0, sizeof(occur));
+        tot = 1; cnt = 0;
+        cin >> n >> m >> s >> t >> bus;
+        s++; t++;
+        for (int i = 1; i <= m; i++) {
+            int x, y, z;
+            scanf("%d%d%d", &x, &y, &z);
+            x++, y++;
+            add(x, y, z); // 偶数边是正边（邻接表2, 4, 6,...位置）
+            add(y, x, z); // 奇数边是反边
+            deg[0][y]++; // 入度
+            deg[1][x]++; // 出度
+        }
+        topsort(s, 0);
+        if (f[0][t] == 0) { puts("-1"); continue; }
+        topsort(t, 1);
+        for (int i = 2; i <= tot; i += 2) {
+            int x = ver[i ^ 1], y = ver[i];
+            if ((long long)f[0][x] * f[1][y] % mod == f[0][t]) {
+                bridge[i] = true;
+            }
+        }
+        // O(M)判重边，用map可能超时
+        for (int x = 1; x <= n; x++) {
+            for (int i = head[x]; i; i = nxt[i]) {
+                if (i & 1) continue; // 只考虑正边
+                int y = ver[i];
+                if (occur[y] == x) {
+                    bridge[i] = false;
+                    bridge[first_occur[y]] = false;
+                } else {
+                    occur[y] = x;
+                    first_occur[y] = i;
+                }
+            }
+        }
+        while (t != s) {
+            a[++cnt] = edge[pre[t]];
+            b[cnt] = bridge[pre[t]];
+            t = ver[pre[t] ^ 1];
+        }
+        // reverse(a + 1, a + cnt + 1); 不反过来也可以
+        // reverse(b + 1, b + cnt + 1);
+        for (int i = 1; i <= cnt; i++) {
+            sum[i] = sum[i - 1] + a[i]; // 以i这条边为结尾（包含i）的前缀总长度
+            sum_bri[i] = sum_bri[i - 1] + (b[i] ? a[i] : 0);
+        }
+        ds_min[0] = 1 << 30;
+        for (int i = 1, j = 0; i <= cnt; i++) { // 恰好在i这条边的结尾处下车，前面的最小危险程度：ds[i]
+            // 双指针扫描，让j+1~i这些边乘车，j这条边有可能部分乘车
+            while (sum[i] - sum[j] > bus) j++;
+            ds[i] = sum_bri[j];
+            if (j > 0 && b[j]) ds[i] -= min(a[j], bus - (sum[i] - sum[j]));
+            ds_min[i] = min(ds[i], ds_min[i - 1] + (b[i] ? a[i] : 0)); // i之前搭一次车：ds_min[i]，即书上的"ds[i]"
+        }
+        for (int i = cnt, j = cnt + 1; i; i--) { // 恰好在i这条边的开头处上车，后面的最小危险程度：ds[i]
+            // 双指针扫描，让i~j-1这些边乘车，j这条边有可能部分乘车
+            while (sum[j - 1] - sum[i - 1] > bus) j--;
+            dt[i] = sum_bri[cnt] - sum_bri[j - 1];
+            if (j <= cnt && b[j]) dt[i] -= min(a[j], bus - (sum[j - 1] - sum[i - 1]));
+        }
+        // 两段乘车分开的情况
+        int ans = 1 << 30;
+        for (int i = 1; i <= cnt; i++)
+            ans = min(ans, dt[i] + ds_min[i - 1]);
+        // 两段乘车接在一起，2*bus覆盖一次的情况
+        for (int i = 1, j = 0; i <= cnt; i++) {
+            while (sum[i] - sum[j] > 2 * bus) j++;
+            int temp = sum_bri[j];
+            if (j > 0 && b[j]) temp -= min(a[j], 2 * bus - (sum[i] - sum[j]));
+            ans = min(ans, temp + sum_bri[cnt] - sum_bri[i]);
+        }
+        cout << ans << endl;
+    }
 }
