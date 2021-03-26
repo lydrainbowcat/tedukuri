@@ -2,7 +2,9 @@
 tedukuri 是「手作り」的意思，读作「てづくり」(近似英文 tezukuli)，指的是由《算法竞赛进阶指南》的作者、读者一起，用自己的双手共同维护的资源社区。为此，我们选择了 GitHub 这个世界上最大的 Programmer Community 作为支持平台。
 
 ## 视频课 Videos
-本书官方的视频教材正在陆续上线，大家可以前往 [https://www.acwing.com/activity/content/35/](https://www.acwing.com/activity/content/35/) 学习。
+本书官方的视频教材正在陆续上线，大家可以前往 AcWing 学习。
+- 0x50 动态规划（20小时）： [https://www.acwing.com/activity/content/35/](https://www.acwing.com/activity/content/35/)
+- 0x60 图论（30小时）: [https://www.acwing.com/activity/content/41/](https://www.acwing.com/activity/content/41/)
 
 ## Contents
 目前，这个repo里包含以下内容：
