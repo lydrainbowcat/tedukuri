@@ -13,7 +13,7 @@ int main() {
 	while (n--) {
 		int x, y, z;
 		scanf("%d %d %d", &x, &y, &z);
-		s[x][y] = z;
+		s[x][y] += z;
 	}
 	for (int i = 0; i <= 5000; i++)
 		for (int j = 0; j <= 5000; j++)
