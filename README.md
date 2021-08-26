@@ -28,7 +28,7 @@ tedukuri 是「手作り」的意思，读作「てづくり」(近似英文 tez
 ## Instructions
 #### 如何下载 GitHub 上的资源？
 1. 可以直接点击页面上的绿色按钮"Clone or download"，下载整个 zip 压缩包（由于你懂的原因，速度可能会比较慢）。
-2. 也可以在本地安装 Git 命令行或图形界面客户端，`git clone`(克隆)项目仓库，以后每次执行 `git pull` 都可以快速地增量更新。
+2. 也可以在本地安装 Git 命令行或图形界面客户端，`git clone`（克隆）项目仓库，以后每次执行 `git pull` 都可以快速地增量更新。
 3. 还可以找到想要的文件，直接右键另存为（只能保存单个文件，不能保存文件夹，数据文件较多时会比较麻烦）。
 #### 如何做书中“OJ 未收录”或“来源于非主流 OJ”的题目？
 可以访问 Contest Hunter 上的[本书专用题库](http://contest-hunter.org:83/contest?type=1)，这里对书中大部分例题、习题均有收录，并公开测试数据和所有用户提交的代码。另外 [AcWing](https://www.acwing.com/problem/search/1/?csrfmiddlewaretoken=5es0vcpy4xlqy4BgN1NrRvM2v71SA5MFBx3FxI4fCZaxQYjX2lpKSNmRPfEJmtHs&search_content=%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E8%BF%9B%E9%98%B6%E6%8C%87%E5%8D%97) 也翻译并收录了本书全部题目。
@@ -36,7 +36,8 @@ tedukuri 是「手作り」的意思，读作「てづくり」(近似英文 tez
 ~~不熟悉的读者可能觉得书上的部分题目在BZOJ上找不到，这是因为BZOJ隐藏了部分题目（又称为权限题），只对收费的VIP用户开放。~~
 1. ~~可以联系BZOJ管理员，购买2年VIP服务，价格在几百元左右，到了NOI阶段BZOJ上的题目有很高的价值。~~
 2. ~~你也可以访问CH上的[本书专用题库](http://contest-hunter.org:83/contest?type=1)，直接免费做到这些题目中的绝大部分（原本是国内外公开比赛的题目）。~~
-BZOJ 现已停止运营，请自行寻找解决方案。
+
+BZOJ 现已停止运营，请自己寻找解决方案。
 #### POJ 突然挂了怎么办？
 可以去 OpenJudge 上的[百练](http://bailian.openjudge.cn)题库搜索一下题目标题，OpenJudge 也是北大运营的，题目与 POJ 有很大重合。
 另外，[本书专用题库](http://contest-hunter.org:83/contest?type=1)已经实现了对 OpenJudge 的远端评测 (Virtual Judge)，也可以直接提交。
