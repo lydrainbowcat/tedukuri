@@ -33,9 +33,9 @@ tedukuri 是「手作り」的意思，读作「てづくり」(近似英文 tez
 #### 如何做书中“OJ 未收录”或“来源于非主流 OJ”的题目？
 可以访问 Contest Hunter 上的[本书专用题库](http://contest-hunter.org:83/contest?type=1)，这里对书中大部分例题、习题均有收录，并公开测试数据和所有用户提交的代码。另外 [AcWing](https://www.acwing.com/problem/search/1/?csrfmiddlewaretoken=5es0vcpy4xlqy4BgN1NrRvM2v71SA5MFBx3FxI4fCZaxQYjX2lpKSNmRPfEJmtHs&search_content=%E7%AE%97%E6%B3%95%E7%AB%9E%E8%B5%9B%E8%BF%9B%E9%98%B6%E6%8C%87%E5%8D%97) 也翻译并收录了本书全部题目。
 #### ~~如何做 BZOJ 隐藏题目？~~
-~~不熟悉的读者可能觉得书上的部分题目在BZOJ上找不到，这是因为BZOJ隐藏了部分题目（又称为权限题），只对收费的VIP用户开放。~~
-1. ~~可以联系BZOJ管理员，购买2年VIP服务，价格在几百元左右，到了NOI阶段BZOJ上的题目有很高的价值。~~
-2. 你也可以访问CH上的[本书专用题库](http://contest-hunter.org:83/contest?type=1)，直接免费做到这些题目中的绝大部分（原本是国内外公开比赛的题目）。
+~~不熟悉的读者可能觉得书上的部分题目在 BZOJ 上找不到，这是因为 BZOJ 隐藏了部分题目（又称为权限题），只对收费的 VIP 用户开放。~~
+1. ~~可以联系 BZOJ 管理员，购买 2 年 VIP 服务，价格在几百元左右，到了 NOI 阶段 BZOJ 上的题目有很高的价值。~~
+2. 你也可以访问 CH 上的[本书专用题库](http://contest-hunter.org:83/contest?type=1)，直接免费做到这些题目中的绝大部分（原本是国内外公开比赛的题目）。
 
 BZOJ 现已停止运营，请自己寻找解决方案。
 #### POJ 突然挂了怎么办？
