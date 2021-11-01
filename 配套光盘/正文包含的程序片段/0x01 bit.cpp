@@ -38,7 +38,7 @@ int hamilton(int n, int weight[20][20]) {
 		for (int j = 0; j < n; j++)
 			if (i >> j & 1)
 				for (int k = 0; k < n; k++)
-					if (i >> k & 1)
+					if ((i^1<<j) >> k & 1)	//因为j,k可能同一点，参考2021年新印刷的p7
 						f[i][j] = min(f[i][j], f[i ^ 1 << j][k] + weight[k][j]);
 	return f[(1 << n) - 1][n - 1];
 }
