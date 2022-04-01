@@ -85,12 +85,12 @@ bool bfs() { // 在残量网络上构造分层图
 	q.push(s); d[s] = 1; now[s] = head[s];
 	while (q.size()) {
 		int x = q.front(); q.pop();
+		if (ver[x] == t) return 1; // 注意,这样才可以保证 Dinic 的时间复杂度.
 		for (int i = head[x]; i; i = Next[i])
 			if (edge[i] && !d[ver[i]]) {
 				q.push(ver[i]);
 				now[ver[i]] = head[ver[i]];
 				d[ver[i]] = d[x] + 1;
-				if (ver[i] == t) return 1;
 			}
 	}
 	return 0;
