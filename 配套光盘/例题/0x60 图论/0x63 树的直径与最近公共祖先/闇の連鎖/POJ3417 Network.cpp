@@ -5,10 +5,10 @@
 #include <iostream>
 using namespace std;
 const int N = 100006;
-int n, m, fa[N], ans[N], v[N], d[N], f[N], ANS = 0;
+int n, m, fa[N], ans[N<<1], v[N], d[N], f[N], ANS = 0;
 int Head[N], Edge[N<<1], Next[N<<1], tot = 0;
 vector<pair<int, int> > q[N];
-pair<int, int> Q[N];
+pair<int, int> Q[N<<1];
 
 inline void add(int x, int y) {
 	Edge[++tot] = y;
